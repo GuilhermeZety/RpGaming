@@ -1,16 +1,10 @@
-# rpgaming
+# RpGaming
 
-A new Flutter project.
+Aplicativo para jogar rpg de mesa
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Versao flutter 3.0.5
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+apk mais atual(OBS: está compactado pq o github nao aceita apk): 
+[RpGaming.zip](https://github.com/GuilhermeZety/RpGaming/files/9229939/RpGaming.zip)
