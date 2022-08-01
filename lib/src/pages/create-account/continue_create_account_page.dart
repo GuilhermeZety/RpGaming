@@ -23,13 +23,15 @@ class ContinueCreateAccountPage extends StatefulWidget {
 }
 
 class _ContinueCreateAccountPageState extends State<ContinueCreateAccountPage> {
-   CreateAccountViewModel controller = CreateAccountViewModel();
+   late CreateAccountViewModel controller = CreateAccountViewModel();
 
   @override
   Widget build(BuildContext context) {
     if(widget.controller != null){
       setState(() {
-        controller = widget.controller!;
+        controller.emailController = widget.controller!.emailController;
+        controller.passwordController = widget.controller!.passwordController;
+        controller.repeatPasswordController = widget.controller!.repeatPasswordController;
       });
     }
     return Scaffold(
@@ -77,7 +79,7 @@ class _ContinueCreateAccountPageState extends State<ContinueCreateAccountPage> {
                             obscure: true,
                             compare: controller.passwordController.value
                           ),
-                          InputDateTime(dateController: controller.dateController.value, label: 'Data de nascimento', onchange: () => controller.formKey.currentState?.validate() ),
+                          InputDateTime(dateController: controller.dateController.value, label: 'Data de nascimento', onchange: () => controller.formKey.currentState?.validate()),
                           AnimatedBuilder(
                             animation: controller.genderPerson,                            
                             builder: (context, child) => Row(

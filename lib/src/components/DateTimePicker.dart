@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rpgaming/src/components/Input.dart';
@@ -16,10 +18,16 @@ class InputDateTime extends StatefulWidget {
 class _InputDateTimeState extends State<InputDateTime> {
   DateTime date = DateTime.now();
 
+  
   @override
-  Widget build(BuildContext context) {
-    widget.dateController.text = DateFormat('dd/MM/yyyy').format(date);
-    
+  void initState() {
+    super.initState();
+
+    Timer.run(() => widget.dateController.text = DateFormat('dd/MM/yyyy').format(date));
+  }
+
+  @override
+  Widget build(BuildContext context) {    
     return Input(
       controller: widget.dateController, 
       type: TextInputType.datetime, 
@@ -42,6 +50,9 @@ class _InputDateTimeState extends State<InputDateTime> {
 
     setState(() {
       date = newDate ?? date;
+    });
+    setState(() {      
+      widget.dateController.text = DateFormat('dd/MM/yyyy').format(date);
     });
 
     if(widget.onchange != null){
