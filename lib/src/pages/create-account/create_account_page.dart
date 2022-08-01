@@ -7,7 +7,6 @@ import 'package:rpgaming/src/Util/navigate.dart';
 import 'package:rpgaming/src/components/Button.dart';
 import 'package:rpgaming/src/components/Input.dart';
 import 'package:rpgaming/src/components/Logo.dart';
-import 'package:rpgaming/src/pages/create-account/continue_create_account_page.dart';
 import 'package:rpgaming/src/pages/create-account/create_account_viewmodel.dart';
 import 'package:rpgaming/src/pages/login/login_page.dart';
 
@@ -30,7 +29,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height),
         child: Stack(
               children: [       
-                Image.asset('assets/images/wallpaper.png', fit: BoxFit.cover, width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height * 0.5, alignment: Alignment.bottomCenter),   
+                Image.asset('assets/images/wallpaper.png', fit: BoxFit.cover, width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height * 0.45, alignment: Alignment.bottomCenter),   
                 Positioned(
                   bottom: 0,
                   child: Container(
@@ -73,14 +72,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                                 ),                            
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconButton(
-                                      iconSize: 35,
-                                      icon: SvgPicture.asset('assets/images/svg/facebook.svg',
-                                        semanticsLabel: 'Label'
-                                      ),
-                                      onPressed: () => null,
-                                    ),
+                                  children: [                                    
                                     IconButton(
                                       iconSize: 35,
                                       icon: SvgPicture.asset('assets/images/svg/google.svg',
@@ -89,14 +81,21 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                                       onPressed: () => null,
                                     ),
                                     IconButton(
-                                      iconSize: 35,
+                                      iconSize: 37,
+                                      icon: SvgPicture.asset('assets/images/svg/facebook.svg',
+                                        semanticsLabel: 'Label'
+                                      ),
+                                      onPressed: () => null,
+                                    ),
+                                    IconButton(
+                                      iconSize: 31,
                                       icon: SvgPicture.asset('assets/images/svg/discord.svg',
                                         semanticsLabel: 'Label'
                                       ),
                                       onPressed: () => null,
                                     ),
                                     IconButton(
-                                      iconSize: 35,
+                                      iconSize: 31,
                                       icon: SvgPicture.asset('assets/images/svg/twitch.svg',
                                         semanticsLabel: 'Label'
                                       ),

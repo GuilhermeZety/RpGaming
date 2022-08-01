@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
 
 import 'package:rpgaming/src/components/Logo.dart';
@@ -17,7 +17,7 @@ class LoadPageViewModel extends ChangeNotifier {
       init.value = true;
       position.value = 0;
         
-      Timer.periodic(const Duration(milliseconds: 500), (timer) => changed.value = !changed.value);
+      Timer.periodic(const Duration(milliseconds: 1), (timer) => changed.value = !changed.value);
 
       Timer(Duration(milliseconds: durationAnimateWave.value - 2000), () => showLogo.value = true);
       Timer(Duration(milliseconds: durationAnimateWave.value), () {
@@ -27,7 +27,6 @@ class LoadPageViewModel extends ChangeNotifier {
           getPosition();
         });
     });
-    // Timer(const Duration(milliseconds: 18000), () => navigatorKey.currentState?.pushNamed('/login'));
   }
 
   getPosition(){
@@ -100,7 +99,7 @@ class AnimatedLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedPositioned(
-      top: showLogo ? MediaQuery.of(context).size.height * 0.4 : MediaQuery.of(context).size.height * 0.2,
+      top: showLogo ? MediaQuery.of(context).size.height * 0.35 : MediaQuery.of(context).size.height * 0.2,
       right: MediaQuery.of(context).size.width * 0.200,
       left: MediaQuery.of(context).size.width * 0.200,
       curve: Curves.fastOutSlowIn,
@@ -113,7 +112,13 @@ class AnimatedLogo extends StatelessWidget {
             AnimatedRotation(
               turns: angulo, 
               duration: const Duration(milliseconds: 2500),
-              child: const Icon(FontAwesomeIcons.diceD20, color: Color(0xFFD7D7D7), size: 70,),
+              child: IconButton(
+                iconSize: 90,
+                icon: SvgPicture.asset('assets/images/svg/logo-vector.svg',
+                  semanticsLabel: 'Label'
+                ),
+                onPressed: () => null,
+              ),
             ),
             const SizedBox(height: 20),
             const Logo(),

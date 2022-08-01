@@ -76,6 +76,7 @@ flutter:
     - assets/images/waves.png
     - assets/images/logo.png
     - assets/images/wallpaper.png
+    - assets/images/svg/logo-vector.svg
     - assets/images/svg/google.svg
     - assets/images/svg/facebook.svg
     - assets/images/svg/discord.svg
@@ -99,7 +100,6 @@ flutter:
     - family: Sahitya
       fonts:
         - asset: assets/fonts/Sahitya-Regular.ttf
-        - weight: 400
         - asset: assets/fonts/Sahitya-Bold.ttf
         - weight: 700
   

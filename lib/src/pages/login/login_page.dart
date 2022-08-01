@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
               children: [       
                 Stack(
                   children: [
-                    Image.asset('assets/images/wallpaper.png', fit: BoxFit.cover, width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height * 0.5, alignment: Alignment.bottomCenter),
+                    Image.asset('assets/images/wallpaper.png', fit: BoxFit.cover, width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height * 0.45, alignment: Alignment.bottomCenter),
                     const Center(
                       heightFactor: 13,
                       child: Logo()
@@ -144,27 +144,27 @@ class _LoginPageState extends State<LoginPage> {
                             children: [
                               IconButton(
                                 iconSize: 35,
-                                icon: SvgPicture.asset('assets/images/svg/facebook.svg',
-                                  semanticsLabel: 'Label'
-                                ),
-                                onPressed: () => null,
-                              ),
-                              IconButton(
-                                iconSize: 35,
                                 icon: SvgPicture.asset('assets/images/svg/google.svg',
                                   semanticsLabel: 'Label'
                                 ),
                                 onPressed: () => null,
                               ),
                               IconButton(
-                                iconSize: 35,
+                                iconSize: 37,
+                                icon: SvgPicture.asset('assets/images/svg/facebook.svg',
+                                  semanticsLabel: 'Label'
+                                ),
+                                onPressed: () => null,
+                              ),
+                              IconButton(
+                                iconSize: 31,
                                 icon: SvgPicture.asset('assets/images/svg/discord.svg',
                                   semanticsLabel: 'Label'
                                 ),
                                 onPressed: () => null,
                               ),
                               IconButton(
-                                iconSize: 35,
+                                iconSize: 31,
                                 icon: SvgPicture.asset('assets/images/svg/twitch.svg',
                                   semanticsLabel: 'Label'
                                 ),
