@@ -39,10 +39,19 @@ dependencies:
   flutter_svg: ^1.1.1+1
   email_validator: ^2.1.16
   intl: ^0.17.0
+  flutter_launcher_icons: ^0.9.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo.png"
+  image_path_ios: "assets/images/logo.png"
+  adaptive_icon_foreground: "assets/images/logo.png"
+  adaptive_icon_background: "#02031E"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -65,6 +74,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/waves.png
+    - assets/images/logo.png
     - assets/images/wallpaper.png
     - assets/images/svg/google.svg
     - assets/images/svg/facebook.svg
