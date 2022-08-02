@@ -6,6 +6,7 @@ import 'package:rpgaming/src/pages/create-account/create_account_page.dart';
 import 'package:rpgaming/src/pages/forgot-password/forgot-password-page.dart';
 import 'package:rpgaming/src/pages/load/load_page.dart';
 import 'package:rpgaming/src/pages/login/login_page.dart';
+import 'package:rpgaming/src/pages/report-error/report_error_page.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -18,6 +19,10 @@ class AppWidget extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       theme: ThemeData(
+        snackBarTheme: SnackBarThemeData(
+          contentTextStyle: TextStyle(color: Color(0xFF2D3140)),
+          elevation: 7,
+        ),
         primaryColor: const Color(0xFF666CDE),
         secondaryHeaderColor: const Color(0xFFAAAAAA),
         canvasColor: const Color(0xFFAAAAAA),
@@ -35,15 +40,16 @@ class AppWidget extends StatelessWidget {
         ),
         fontFamily: 'Sahitya',
         iconTheme: const IconThemeData(color: Colors.white)
-      ),      
+      ),
       routes: <String, WidgetBuilder>{
-        '/loading': (BuildContext context) => const LoadPage(),
+        '/': (BuildContext context) => const LoadPage(),
         '/login': (BuildContext context) => const LoginPage(),
         '/create-account': (BuildContext context) => const CreateAccountPage(),
         '/continue-create-account': (BuildContext context) => const ContinueCreateAccountPage(),
         '/forgot-password': (BuildContext context) => const ForgotPasswordPage(),
+        '/report-error': (BuildContext context) => const ReportErrorPage(error: 'null',),
       },
-      initialRoute: '/loading',
+      initialRoute: '/',
     );
   }
 

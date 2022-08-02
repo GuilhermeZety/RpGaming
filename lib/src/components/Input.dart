@@ -16,6 +16,7 @@ class Input extends StatefulWidget {
     this.compare,
     this.minimumAcceptableDate,
     this.onchange,
+    this.big = false,
 
   }) : super(key: key);
   
@@ -24,6 +25,7 @@ class Input extends StatefulWidget {
   final Widget label;
   final String hintText;
   final bool obscure;
+  final bool big;
   final String? initialText;
   final TextEditingController? compare;
   final void Function()? onTap;
@@ -57,6 +59,17 @@ class _InputState extends State<Input> {
         if (value == null || value.isEmpty) {
           return 'Por favor insira algo.';
         }        
+        return null;
+      };
+    }
+    else if(widget.type == TextInputType.name){
+      validator = (value) {
+        if (value == null || value.isEmpty) {
+          return 'Por favor insira algo.';
+        }
+        else if(value.length < 2){
+          return 'no mínimo 2 caracteres';
+        }
         return null;
       };
     }
@@ -104,8 +117,10 @@ class _InputState extends State<Input> {
       onTap: widget.onTap,
       onChanged: widget.onchange != null ? (e) => widget.onchange!() : null,
       readOnly: widget.type == TextInputType.datetime ? true : false,
+      minLines: 1,
+      maxLines: widget.big ? 7 : 1,
       decoration: InputDecoration(
-        border: const UnderlineInputBorder(),
+        border: widget.big ? OutlineInputBorder() : const UnderlineInputBorder(),
         label: widget.label,
         hintText: widget.hintText,
         suffixIcon: widget.type == TextInputType.visiblePassword ?        

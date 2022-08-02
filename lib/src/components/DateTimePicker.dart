@@ -34,7 +34,7 @@ class _InputDateTimeState extends State<InputDateTime> {
       label: Text(widget.label),
       hintText: '', 
       onTap: () => pickDate(context), 
-      minimumAcceptableDate: DateTime(DateTime.now().year - 10, DateTime.now().month, DateTime.now().day),
+      minimumAcceptableDate: DateTime(DateTime.now().year - 5, DateTime.now().month, DateTime.now().day),
     );
     
   }

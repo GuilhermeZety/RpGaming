@@ -4,12 +4,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rpgaming/src/Util/constants.dart';
 import 'package:rpgaming/src/Util/navigate.dart';
 import 'package:rpgaming/src/components/Button.dart';
 import 'package:rpgaming/src/components/Input.dart';
 import 'package:rpgaming/src/components/Logo.dart';
 import 'package:rpgaming/src/pages/create-account/create_account_page.dart';
 import 'package:rpgaming/src/pages/forgot-password/forgot-password-page.dart';
+import 'package:rpgaming/src/pages/home/home_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginPage extends StatefulWidget {
   static const String route = '/login';
@@ -21,12 +24,59 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  
+  @override
+  void initState() {
+    super.initState();
+
+    Timer.run(() => load());
+  }
+
+  load() async {
+    final session = await supabase.auth.session();
+    if(session != null){
+      if(session.user != null){
+        to(context, HomePage());
+      }
+    }
+  }
+
+  Future<void> _signIn() async {
+    try{
+      GotrueSessionResponse res = await supabase.auth.signIn(
+        email: _emailController.text,
+        password: _passwordController.text
+      );
+      if(res.error != null){
+        if(res.error!.message == 'Invalid login credentials'){
+          context.showWarningSnackBar(message: 'Email ou senha inválidos');
+        }
+        else if(res.error!.message == "Email not confirmed"){
+          context.showWarningSnackBar(message: 'Email não confirmado');
+        }
+        else{
+          context.showWarningSnackBar(message: res.error!.message);
+        }
+      }
+      else{
+        if(res.data != null){
+          User? user = res.data?.user;
+          supabase.auth.currentUser = user;
+          context.showSuccessSnackBar(message: 'Logado com sucesso');
+          to(context, HomePage());
+        }
+      }
+    }
+    catch(err){
+      context.showErrorSnackBar(error: err.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -60,14 +110,14 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Input(
-                            controller: emailController,
+                            controller: _emailController,
                             type: TextInputType.emailAddress,                            
                             label: const Text('Email'),
                             hintText: 'insira um email...',
                             obscure: false,
                           ),
                           Input(
-                            controller: passwordController,
+                            controller: _passwordController,
                             type: TextInputType.visiblePassword,    
                             label: const Text('Senha'),
                             hintText: 'insira uma senha...',
@@ -85,14 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                           Button(
                             onPress: () async {
                               if (_formKey.currentState!.validate()) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Processando')),
-                                );
-                                print({
-                                  'email': emailController.text,
-                                  'password': passwordController.text
-                                });
-                                await Future.delayed(const Duration(seconds: 3));
+                                await _signIn();
                               }
                             },
                             text: 'Entrar', 
@@ -147,14 +190,14 @@ class _LoginPageState extends State<LoginPage> {
                                 icon: SvgPicture.asset('assets/images/svg/google.svg',
                                   semanticsLabel: 'Label'
                                 ),
-                                onPressed: () => null,
+                                onPressed: () => context.showInfoSnackBar(title: 'Google', message: 'logar com o google'),
                               ),
                               IconButton(
                                 iconSize: 37,
                                 icon: SvgPicture.asset('assets/images/svg/facebook.svg',
                                   semanticsLabel: 'Label'
                                 ),
-                                onPressed: () => null,
+                                onPressed: () => context.showSuccessSnackBar(message: 'logar com o facebook'),
                               ),
                               IconButton(
                                 iconSize: 31,

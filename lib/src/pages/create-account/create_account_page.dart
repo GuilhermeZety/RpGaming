@@ -34,7 +34,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   bottom: 0,
                   child: Container(
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.8,
+                    height: MediaQuery.of(context).viewInsets.bottom == 0 ? MediaQuery.of(context).size.height * 0.8 : MediaQuery.of(context).size.height * 0.6,
                     padding: const EdgeInsets.only(top: 30, bottom: 8, left: 45, right: 45),                    
                     decoration: const BoxDecoration(
                       color: Color(0xFF121222),

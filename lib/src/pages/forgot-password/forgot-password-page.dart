@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:rpgaming/src/Util/constants.dart';
 import 'package:rpgaming/src/Util/navigate.dart';
 import 'package:rpgaming/src/components/Button.dart';
 import 'package:rpgaming/src/components/Input.dart';
@@ -18,6 +19,13 @@ class ForgotPasswordPage extends StatefulWidget {
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
+
+  // void _sendEmail() async {    
+  //   if (_formKey.currentState!.validate()) {
+  //     var response = await supabase.auth.api.resetPasswordForEmail(emailController.text);
+  //     if(response.error != null){}
+  //   }    
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +59,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       children: [
                         Button(text: 'Voltar', onPress: () => to(context, const LoginPage()), size: const Size(100, 50), colorInverted: true, borderRadius: 15, ),
                         const SizedBox(width: 10),
-                        const Button(text: 'Enviar', onPress: null, size: Size(100, 50), borderRadius: 15),
+                        Button(text: 'Enviar', onPress: () async => context.showWarningSnackBar(message: 'Ainda não implementado, caso queira alterar, entra em contato com o email guilherme.zety@gmail.com'), size: Size(100, 50), borderRadius: 15),
                       ],
                     )
                   ],
