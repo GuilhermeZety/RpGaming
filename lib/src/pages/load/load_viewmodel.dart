@@ -4,7 +4,7 @@ import 'dart:async';
 
 import 'package:rpgaming/src/components/Logo.dart';
 
-class LoadPageViewModel extends ChangeNotifier {
+class LoadViewModel extends ChangeNotifier {
   ValueNotifier<bool> init = ValueNotifier<bool>(false);
   ValueNotifier<bool> showLogo = ValueNotifier<bool>(false);
   ValueNotifier<double> position = ValueNotifier<double>(-5000);

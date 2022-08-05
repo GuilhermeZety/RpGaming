@@ -3,11 +3,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:rpgaming/src/Util/constants.dart';
-import 'package:rpgaming/src/Util/navigate.dart';
-import 'package:rpgaming/src/pages/home/home_page.dart';
-import 'package:rpgaming/src/pages/load/load_page_viewmodel.dart';
-import 'package:rpgaming/src/pages/login/login_page.dart';
+import 'package:rpgaming/main.dart';
+import 'package:rpgaming/src/api/auth_state.dart';
+import 'package:rpgaming/src/pages/load/load_viewmodel.dart';
 
 
 class LoadPage extends StatefulWidget {
@@ -18,13 +16,18 @@ class LoadPage extends StatefulWidget {
   State<LoadPage> createState() => _LoadPageState();
 }
 
-class _LoadPageState extends State<LoadPage> {
-  final controller = LoadPageViewModel();
+class _LoadPageState extends AuthState<LoadPage> {
+  final controller = LoadViewModel();
   
   @override
   void initState() {
     super.initState();
-
+    Timer(Duration(seconds: 5), () {
+      if(resetingPassword == false){
+        Timer(const Duration(seconds: 10), () => recoverSupabaseSession());
+      };
+    });
+    
     Timer.run(() => controller.load());
   }
 
@@ -35,12 +38,6 @@ class _LoadPageState extends State<LoadPage> {
 
   @override
   Widget build(BuildContext context) {
-    if(supabase.auth.currentUser != null){
-      Timer(const Duration(seconds: 3), () => to(context, const HomePage()));
-    }else{
-      Timer(const Duration(seconds: 3), () => to(context, const LoginPage()));
-    }
-    
     return Scaffold(
       body: 
       AnimatedBuilder(

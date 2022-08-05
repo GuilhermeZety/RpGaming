@@ -10,6 +10,7 @@
 		<key>CFBundleURLSchemes</key>
 		<array>
 			<string>io.supabase.flutterquickstart</string>
+			<string>com.example.rpgaming</string>
 		</array>
 		</dict>
 	</array>

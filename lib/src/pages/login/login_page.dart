@@ -1,18 +1,22 @@
 // ignore_for_file: avoid_returning_null_for_void
 
-import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rpgaming/src/Util/constants.dart';
 import 'package:rpgaming/src/Util/navigate.dart';
+import 'package:rpgaming/src/api/auth_state.dart';
 import 'package:rpgaming/src/components/Button.dart';
+import 'package:rpgaming/src/components/DividerWithWidget.dart';
 import 'package:rpgaming/src/components/Input.dart';
 import 'package:rpgaming/src/components/Logo.dart';
 import 'package:rpgaming/src/pages/create-account/create_account_page.dart';
 import 'package:rpgaming/src/pages/forgot-password/forgot-password-page.dart';
 import 'package:rpgaming/src/pages/home/home_page.dart';
+import 'package:rpgaming/src/pages/login/login_viewmodel.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
 
 class LoginPage extends StatefulWidget {
   static const String route = '/login';
@@ -22,56 +26,58 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final _formKey = GlobalKey<FormState>();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+class _LoginPageState extends AuthState<LoginPage> {
+  final controller = LoginViewModel();
 
   
-  @override
-  void initState() {
-    super.initState();
-
-    Timer.run(() => load());
-  }
-
-  load() async {
-    final session = await supabase.auth.session();
-    if(session != null){
-      if(session.user != null){
-        to(context, HomePage());
-      }
-    }
-  }
-
-  Future<void> _signIn() async {
-    try{
-      GotrueSessionResponse res = await supabase.auth.signIn(
-        email: _emailController.text,
-        password: _passwordController.text
-      );
-      if(res.error != null){
-        if(res.error!.message == 'Invalid login credentials'){
-          context.showWarningSnackBar(message: 'Email ou senha inválidos');
+  handleSignIn(Provider? provider) async {
+    if (provider == null) {
+      if(controller.formKey.currentState!.validate()){
+        try{
+          GotrueSessionResponse res = await supabase.auth.signIn(
+            email: controller.emailController.value.text,
+            password: controller.passwordController.value.text
+          );
+          if(res.error != null){
+            if(res.error!.message == 'Invalid login credentials'){
+              context.showWarningSnackBar(message: 'Email ou senha inválidos');
+            }
+            else if(res.error!.message == "Email not confirmed"){
+              context.showWarningSnackBar(message: 'Email não confirmado');
+            }
+            else{
+              context.showWarningSnackBar(message: res.error!.message);
+            }
+          }
+          else{
+            if(res.data != null){
+              context.showSuccessSnackBar(message: 'Logado com sucesso');
+              to(context, HomePage());
+            }
+          }          
         }
-        else if(res.error!.message == "Email not confirmed"){
-          context.showWarningSnackBar(message: 'Email não confirmado');
-        }
-        else{
-          context.showWarningSnackBar(message: res.error!.message);
+        catch(err){
+          context.showErrorSnackBar(error: err.toString());
         }
       }
-      else{
-        if(res.data != null){
-          User? user = res.data?.user;
-          supabase.auth.currentUser = user;
-          context.showSuccessSnackBar(message: 'Logado com sucesso');
-          to(context, HomePage());
+    }    
+    else{
+      try{
+        final res = await supabase.auth.signInWithProvider(
+          provider,        
+          options: AuthOptions(
+            redirectTo: kIsWeb
+              ? null
+              : 'io.supabase.flutterquickstart://login-callback/'),
+        );
+        
+        if(res == false){
+          context.showWarningSnackBar(message: 'Não houve sucesso ao logar com o ${provider.name()}');
         }
       }
-    }
-    catch(err){
-      context.showErrorSnackBar(error: err.toString());
+      catch(err){
+        context.showErrorSnackBar(error: err.toString());
+      }
     }
   }
 
@@ -103,21 +109,21 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))
                     ),
                     child: Form(
-                      onChanged: () => _formKey.currentState?.validate(),
-                      key: _formKey,
+                      onChanged: () => controller.formKey.currentState?.validate(),
+                      key: controller.formKey,
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Input(
-                            controller: _emailController,
+                            controller: controller.emailController.value,
                             type: TextInputType.emailAddress,                            
                             label: const Text('Email'),
                             hintText: 'insira um email...',
                             obscure: false,
                           ),
                           Input(
-                            controller: _passwordController,
+                            controller: controller.passwordController.value,
                             type: TextInputType.visiblePassword,    
                             label: const Text('Senha'),
                             hintText: 'insira uma senha...',
@@ -134,9 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                           const SizedBox(height: 9),
                           Button(
                             onPress: () async {
-                              if (_formKey.currentState!.validate()) {
-                                await _signIn();
-                              }
+                              await handleSignIn(null);
                             },
                             text: 'Entrar', 
                             size: Size(MediaQuery.of(context).size.width, 70),
@@ -144,44 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                             fontSize: 20                            
                           ),
                           const SizedBox(width: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  decoration: const BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.bottomLeft,
-                                      end: Alignment.bottomRight,
-                                      colors: [
-                                        Colors.transparent,
-                                        Colors.grey,
-                                      ]
-                                    )
-                                  ),
-                                  height: 1,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              const Text('ou continue com'),
-                              const SizedBox(width: 5),
-                              Expanded(
-                                child: Container(
-                                   decoration: const BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.bottomRight,
-                                      end: Alignment.bottomLeft,
-                                      colors: [
-                                        Colors.transparent,
-                                        Colors.grey,
-                                      ]
-                                    )
-                                  ),
-                                  height: 1,
-                                ),
-                              ),
-                            ],
-                          ),
+                          DividerWithWidget(child: Text('ou continue com')),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -190,28 +157,28 @@ class _LoginPageState extends State<LoginPage> {
                                 icon: SvgPicture.asset('assets/images/svg/google.svg',
                                   semanticsLabel: 'Label'
                                 ),
-                                onPressed: () => context.showInfoSnackBar(title: 'Google', message: 'logar com o google'),
+                                onPressed: () => handleSignIn(Provider.google),
                               ),
                               IconButton(
                                 iconSize: 37,
                                 icon: SvgPicture.asset('assets/images/svg/facebook.svg',
                                   semanticsLabel: 'Label'
                                 ),
-                                onPressed: () => context.showSuccessSnackBar(message: 'logar com o facebook'),
+                                onPressed: () => handleSignIn(Provider.facebook),
                               ),
                               IconButton(
                                 iconSize: 31,
                                 icon: SvgPicture.asset('assets/images/svg/discord.svg',
                                   semanticsLabel: 'Label'
                                 ),
-                                onPressed: () => null,
+                                onPressed: () => handleSignIn(Provider.discord),
                               ),
                               IconButton(
                                 iconSize: 31,
                                 icon: SvgPicture.asset('assets/images/svg/twitch.svg',
                                   semanticsLabel: 'Label'
                                 ),
-                                onPressed: () => null,
+                                onPressed: () => handleSignIn(Provider.twitch),
                               ),
                             ],
                           ),
@@ -232,8 +199,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                ),
-                
+                ),                
               ]
             )
       ),

@@ -56,4 +56,39 @@ class CreateAccountViewModel extends ChangeNotifier {
   setGender(value){
     genderPerson.value = value;
   }
+
+   getGender(){
+    if(genderPerson.value == GenderPerson.male){
+      return 'Male';
+    }
+    else if(genderPerson.value == GenderPerson.female){
+      return 'Female';
+    }
+    else if(genderPerson.value == GenderPerson.other){
+      return 'Other';
+    }
+  }
+
+   getGenderValue(){
+    if(genderPerson.value == GenderPerson.male){
+      return 'Masculino';
+    }
+    else if(genderPerson.value == GenderPerson.female){
+      return 'Feminino';
+    }
+    else if(genderPerson.value == GenderPerson.other){
+      return genderController.value.text;
+    }
+  }
+
+  
+  correctFields(){
+    nameController.value.text = nameController.value.text.trim();
+    lastNameController.value.text = lastNameController.value.text.trim();
+    emailController.value.text = emailController.value.text.trim();
+    passwordController.value.text = passwordController.value.text.trim();
+    dateController.value.text = dateController.value.text.trim();
+    genderController.value.text = genderController.value.text.trim();
+  }
+
 }

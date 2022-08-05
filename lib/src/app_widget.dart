@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:rpgaming/src/pages/create-account/continue_create_account_page.dart';
 import 'package:rpgaming/src/pages/create-account/create_account_page.dart';
+import 'package:rpgaming/src/pages/forgot-password/change-password-page.dart';
 import 'package:rpgaming/src/pages/forgot-password/forgot-password-page.dart';
+import 'package:rpgaming/src/pages/home/home_page.dart';
 import 'package:rpgaming/src/pages/load/load_page.dart';
 import 'package:rpgaming/src/pages/login/login_page.dart';
 import 'package:rpgaming/src/pages/report-error/report_error_page.dart';
@@ -47,9 +49,12 @@ class AppWidget extends StatelessWidget {
         '/create-account': (BuildContext context) => const CreateAccountPage(),
         '/continue-create-account': (BuildContext context) => const ContinueCreateAccountPage(),
         '/forgot-password': (BuildContext context) => const ForgotPasswordPage(),
+        '/change-password': (BuildContext context) => const ChangePasswordPage(),
         '/report-error': (BuildContext context) => const ReportErrorPage(error: 'null',),
+        '/home-page': (BuildContext context) => const HomePage(),
       },
       initialRoute: '/',
+      // home: LoadPage(),
     );
   }
 

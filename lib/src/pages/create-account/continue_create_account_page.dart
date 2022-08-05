@@ -30,7 +30,7 @@ class _ContinueCreateAccountPageState extends State<ContinueCreateAccountPage> {
 
 Future<void> _signUp() async {  
     if (controller.formKey.currentState!.validate()) {
-      correctFields();
+      controller.correctFields();
 
       GotrueSessionResponse response = await supabase.auth.signUp(
         controller.emailController.value.text,
@@ -46,8 +46,8 @@ Future<void> _signUp() async {
           'last_name': controller.lastNameController.value.text,
           'nickname': controller.nameController.value.text.split(" ").first,
           'birthday': toTimestampString(DateFormat('dd/MM/yyyy').parse(controller.dateController.value.text).toIso8601String()),
-          'gender': getGender(),
-          'gender_value': getGenderValue()
+          'gender': controller.getGender(),
+          'gender_value': controller.getGenderValue()
         };
 
         final resp = await supabase.from('user').upsert(informations).execute();
@@ -62,43 +62,6 @@ Future<void> _signUp() async {
       }
     }
   }
-  
-
-  getGender(){
-    if(controller.genderPerson.value == GenderPerson.male){
-      return 'Male';
-    }
-    else if(controller.genderPerson.value == GenderPerson.female){
-      return 'Female';
-    }
-    else if(controller.genderPerson.value == GenderPerson.other){
-      return 'Other';
-    }
-  }
-
-  getGenderValue(){
-    if(controller.genderPerson.value == GenderPerson.male){
-      return 'Masculino';
-    }
-    else if(controller.genderPerson.value == GenderPerson.female){
-      return 'Feminino';
-    }
-    else if(controller.genderPerson.value == GenderPerson.other){
-      return controller.genderController.value.text;
-    }
-  }
-
-  correctFields(){
-    setState(() {
-      controller.nameController.value.text = controller.nameController.value.text.trim();
-      controller.lastNameController.value.text = controller.lastNameController.value.text.trim();
-      controller.emailController.value.text = controller.emailController.value.text.trim();
-      controller.passwordController.value.text = controller.passwordController.value.text.trim();
-      controller.dateController.value.text = controller.dateController.value.text.trim();
-      controller.genderController.value.text = controller.genderController.value.text.trim();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     if(widget.controller != null){
@@ -126,115 +89,115 @@ Future<void> _signUp() async {
                 child: Form(
                   key: controller.formKey,
                   onChanged: () => controller.formKey.currentState?.validate(),
-                  child:  CustomScrollView(
-                            scrollDirection: Axis.vertical,
-                            slivers: [
-                              SliverFillRemaining(
-                                hasScrollBody: false,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text('Insira o restante dos dados.'),
-                      Container(
-                        padding: const EdgeInsets.all(20),
+                  child: CustomScrollView(
+                    scrollDirection: Axis.vertical,
+                    slivers: [
+                      SliverFillRemaining(
+                        hasScrollBody: false,
                         child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Input(
-                              controller: controller.nameController.value,
-                              type: TextInputType.name,
-                              label: const Text('Nome'),
-                              hintText: 'insira seu nome...'
-                            ),
-                            Input(
-                              controller: controller.lastNameController.value,
-                              type: TextInputType.name,
-                              label: const Text('Sobrenome'),
-                              hintText: 'insira seu sonbrenome...',
-                            ),
-                            Input(
-                              controller: controller.emailController.value,
-                              type: TextInputType.emailAddress,
-                              label: const Text('Email'),
-                              hintText: 'insira um email...'
-                            ),
-                            Input(
-                              controller: controller.passwordController.value,
-                              type: TextInputType.visiblePassword,
-                              label: const Text('Senha'),
-                              hintText: 'insira uma senha...',
-                              obscure: true
-                            ),
-                            Input(
-                              controller: controller.repeatPasswordController.value,
-                              type: TextInputType.visiblePassword,
-                              label: const Text('Confirmar senha'),
-                              hintText: 'confirme sua senha...',
-                              obscure: true,
-                              compare: controller.passwordController.value
-                            ),
-                            InputDateTime(dateController: controller.dateController.value, label: 'Data de nascimento', onchange: () => controller.formKey.currentState?.validate()),
-                            AnimatedBuilder(
-                              animation: controller.genderPerson,                            
-                              builder: (context, child) => Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            const Text('Insira o restante dos dados.'),
+                            Container(
+                              padding: const EdgeInsets.all(20),
+                              child: Column(
                                 children: [
-                                  SizedBox(
-                                    height: 75,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
+                                  Input(
+                                    controller: controller.nameController.value,
+                                    type: TextInputType.name,
+                                    label: const Text('Nome'),
+                                    hintText: 'insira seu nome...'
+                                  ),
+                                  Input(
+                                    controller: controller.lastNameController.value,
+                                    type: TextInputType.name,
+                                    label: const Text('Sobrenome'),
+                                    hintText: 'insira seu sonbrenome...',
+                                  ),
+                                  Input(
+                                    controller: controller.emailController.value,
+                                    type: TextInputType.emailAddress,
+                                    label: const Text('Email'),
+                                    hintText: 'insira um email...'
+                                  ),
+                                  Input(
+                                    controller: controller.passwordController.value,
+                                    type: TextInputType.visiblePassword,
+                                    label: const Text('Senha'),
+                                    hintText: 'insira uma senha...',
+                                    obscure: true
+                                  ),
+                                  Input(
+                                    controller: controller.repeatPasswordController.value,
+                                    type: TextInputType.visiblePassword,
+                                    label: const Text('Confirmar senha'),
+                                    hintText: 'confirme sua senha...',
+                                    obscure: true,
+                                    compare: controller.passwordController.value
+                                  ),
+                                  InputDateTime(dateController: controller.dateController.value, label: 'Data de nascimento', onchange: () => controller.formKey.currentState?.validate()),
+                                  AnimatedBuilder(
+                                    animation: controller.genderPerson,                            
+                                    builder: (context, child) => Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         SizedBox(
-                                          height: 60,
-                                          child: DropdownButton<GenderPerson>(
-                                            itemHeight: 50,
-                                            dropdownColor: const Color(0xFF2F2F3C),
-                                            value: controller.genderPerson.value,
-                                            underline: Container(
-                                              decoration: const BoxDecoration(
-                                                border: Border(
-                                                  bottom: BorderSide(
-                                                    color: Color(0xFF737379),
-                                                    width: 1.0,
+                                          height: 75,
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              SizedBox(
+                                                height: 60,
+                                                child: DropdownButton<GenderPerson>(
+                                                  itemHeight: 50,
+                                                  dropdownColor: const Color(0xFF2F2F3C),
+                                                  value: controller.genderPerson.value,
+                                                  underline: Container(
+                                                    decoration: const BoxDecoration(
+                                                      border: Border(
+                                                        bottom: BorderSide(
+                                                          color: Color(0xFF737379),
+                                                          width: 1.0,
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ),
+                                                  style: TextStyle(color: Theme.of(context).secondaryHeaderColor),
+                                                  items: const [
+                                                    DropdownMenuItem(value: GenderPerson.male, child: Text('Masculino')),
+                                                    DropdownMenuItem(value: GenderPerson.female, child: Text('Feminino')),
+                                                    DropdownMenuItem(value: GenderPerson.other, child: Text('Outro')),
+                                                  ],
+                                                  onChanged: (value) => controller.setGender(value)
                                                 ),
                                               ),
-                                            ),
-                                            style: TextStyle(color: Theme.of(context).secondaryHeaderColor),
-                                            items: const [
-                                              DropdownMenuItem(value: GenderPerson.male, child: Text('Masculino')),
-                                              DropdownMenuItem(value: GenderPerson.female, child: Text('Feminino')),
-                                              DropdownMenuItem(value: GenderPerson.other, child: Text('Outro')),
                                             ],
-                                            onChanged: (value) => controller.setGender(value)
                                           ),
                                         ),
+                                        
+                                        controller.genderPerson.value == GenderPerson.other ?
+                                          Flexible(child: Container(margin: const EdgeInsets.only(left: 20), child: Input(controller: controller.genderController.value, type: TextInputType.text, label: Text('gênero'), hintText: 'Insira seu gênero...')))
+                                        : const SizedBox()
                                       ],
                                     ),
                                   ),
-                                  
-                                  controller.genderPerson.value == GenderPerson.other ?
-                                    Flexible(child: Container(margin: const EdgeInsets.only(left: 20), child: Input(controller: controller.genderController.value, type: TextInputType.text, label: Text('gênero'), hintText: 'Insira seu gênero...')))
-                                  : const SizedBox()
-                                ],
-                              ),
-                            ),
 
+                                ],
+                              )
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Button(text: 'Voltar', onPress: () => to(context, const LoginPage()), size: const Size(100, 50), colorInverted: true, borderRadius: 15, ),
+                                const SizedBox(width: 10),
+                                Button(text: 'Confirmar', onPress: () async {await _signUp();} , size: const Size(100, 50), borderRadius: 15),
+                              ],
+                            )
                           ],
-                        )
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Button(text: 'Voltar', onPress: () => to(context, const LoginPage()), size: const Size(100, 50), colorInverted: true, borderRadius: 15, ),
-                          const SizedBox(width: 10),
-                          Button(text: 'Confirmar', onPress: () async {await _signUp();} , size: const Size(100, 50), borderRadius: 15),
-                        ],
+                        ),
                       )
-                    ],
-                  ),
-                )
-            ]
-          )
+                    ]
+                  )
                 ),
               )
             ],
@@ -242,5 +205,6 @@ Future<void> _signUp() async {
         ),
       ),
     );
+    
   }
 }

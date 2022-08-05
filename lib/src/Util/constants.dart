@@ -5,6 +5,7 @@ import 'package:rpgaming/src/pages/report-error/report_error_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final supabase = Supabase.instance.client;
+final supabaseInstanse = Supabase.instance;
 
 extension ShowSnackBar on BuildContext {
 
@@ -24,6 +25,7 @@ extension ShowSnackBar on BuildContext {
     Icon icon = const Icon(Icons.verified)
   }) {
     ScaffoldMessenger.of(this).showSnackBar(SnackBar(
+      duration: Duration(seconds: 2),
       content: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

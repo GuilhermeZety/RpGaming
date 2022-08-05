@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:rpgaming/src/Util/custom_page_route.dart';
 
 Future<void> to(BuildContext context, Widget page) async {
-  Navigator.of(context).push(
+  Navigator.of(context).pushAndRemoveUntil(
     CustomPageRouteFade(child: page, duration: const Duration(milliseconds: 400)),
+    (r) => false
   );
 }
 
 Future<void> pushNamed(context, String route) async {
-  await Navigator.of(context).pushNamed(route);
+  await Navigator.of(context).pushNamedAndRemoveUntil(route, (r) => false);;
 }

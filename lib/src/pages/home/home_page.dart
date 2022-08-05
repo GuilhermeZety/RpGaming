@@ -1,26 +1,26 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:supabase/supabase.dart';
+import 'package:rpgaming/src/models/UserInfo.dart';
 import 'package:rpgaming/src/api/auth_required_state.dart';
 import 'package:rpgaming/src/Util/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomePage extends StatefulWidget {
+  static const String route = '/home-page';
   const HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends AuthRequiredState<HomePage> {
-  
+class _HomePageState extends AuthRequiredState<HomePage> {  
   // final _usernameController = TextEditingController();
   // final _websiteController = TextEditingController();
-  // var _loading = false;
+  var _loading = true;
 
-  late User user;
-  late Map userData;
+  User? sessionUser;
+  UserInfo? userInfo;
 
   // @override
   // void initState() {
@@ -34,25 +34,54 @@ class _HomePageState extends AuthRequiredState<HomePage> {
   // }
 
   Future<void> _signOut() async {
-    final response = await supabase.auth.signOut();
-    if (response.error != null) {
-      context.showWarningSnackBar(message: response.error!.message);
-    }
-    else{   
-      //success   
-      context.showSuccessSnackBar(message: 'deslogado com sucesso.');
+    if(mounted){
+      try{
+        var response = await supabase.auth.signOut();
+
+        if(response.error != null){
+          context.showWarningSnackBar(message: response.error!.message);
+        }
+        else{
+          context.showSuccessSnackBar(message: 'Deslogado com sucesso');
+        }
+      }
+      catch(err){
+        context.showErrorSnackBar(error: err.toString());
+      }
     }
   }
 
   @override
   void onAuthenticated(Session session) async {
-    user = session.user!;
-    final profile = await _getProfile(user.id);
+    try{
+      if(session.user != null){
+        if(userInfo == null){
+          var a = await _getProfile(session.user!.id);
+          if(a != null){
+            var profile = UserInfo.fromMap(a);
 
-    setState(() {
-      userData = profile;
-    });
 
+            setState(() {
+              sessionUser = session.user!;
+              userInfo = profile;
+            });
+          }
+        }
+      }
+      else{
+        onUnauthenticated();
+      }
+      setState(() {
+        _loading = false;      
+      });
+    }
+    catch(err){
+      context.showWarningSnackBar(message: err.toString());
+      
+      setState(() {
+        _loading = false;      
+      });
+    }    
   }
 
   _getProfile(String id) async {
@@ -86,18 +115,22 @@ class _HomePageState extends AuthRequiredState<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ListView(
+        child: 
+        _loading ?
+          Center(child: CircularProgressIndicator(),)
+        :
+        ListView(
           padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
           children: [
             GestureDetector(
               onTap: () async {await selectImage();},
-              child: CircleAvatar(radius: 40)
+              child: CircleAvatar(radius: 40, child: userInfo != null ? userInfo!.avatar_url != null ? ClipOval(child: Image.network(userInfo!.avatar_url!)) : null : null, )
             ),
-            Text(userData['nickname']),
-            Text(userData['gender_value']),
-            Text(user.email!),
+            // Text(userInfo!.nickname!),
+            Text(sessionUser?.email ?? 'email'),
+            // Text(userInfo!.updated_at.toIso8601String()),
             const SizedBox(height: 18),
-            ElevatedButton(onPressed: _signOut, child: const Text('Sign Out')),
+            ElevatedButton(onPressed: () async {await _signOut();} , child: const Text('Sign Out')),
           ],
         ),
       ),
