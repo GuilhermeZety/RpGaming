@@ -4,6 +4,8 @@ Aplicativo para jogar rpg de mesa
 
 ## Getting Started
 
+Projeto no figma: https://www.figma.com/file/xoFmVjXE6zZqZXJeMon6ZL/RpGaming?node-id=839%3A27
+
 Versao flutter 3.0.5
 
 apk mais atual(OBS: está compactado pq o github não aceita apk): 
