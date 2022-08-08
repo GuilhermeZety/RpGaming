@@ -10,6 +10,5 @@ apk mais atual(OBS: está compactado pq o github não aceita apk):
 [rpgaming.zip](https://github.com/GuilhermeZety/RpGaming/files/9285195/rpgaming.zip)
 
 <br />
-
-![Login - Mobile](https://user-images.githubusercontent.com/90266977/183520578-1d7037c7-fca5-4cff-8c99-16754b0d6327.png|width=100px)
+[[https://user-images.githubusercontent.com/90266977/183520578-1d7037c7-fca5-4cff-8c99-16754b0d6327.png|height=1000px]]
 ![HomePage](https://user-images.githubusercontent.com/90266977/183519918-153d1279-d5c3-4e2a-95e3-52fa0e6b6845.png)
