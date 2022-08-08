@@ -11,5 +11,5 @@ apk mais atual(OBS: está compactado pq o github não aceita apk):
 
 <br />
 
-![Login - Mobile](https://user-images.githubusercontent.com/90266977/183520578-1d7037c7-fca5-4cff-8c99-16754b0d6327.png)
+![Login - Mobile](https://user-images.githubusercontent.com/90266977/183520578-1d7037c7-fca5-4cff-8c99-16754b0d6327.png|width=100px)
 ![HomePage](https://user-images.githubusercontent.com/90266977/183519918-153d1279-d5c3-4e2a-95e3-52fa0e6b6845.png)
