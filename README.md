@@ -2,8 +2,13 @@
 
 Aplicativo para jogar rpg de mesa
 
-## Getting Started
+## Situação atual:
+Fazendo a implementação MobX e Provider; 
+Implementando Testes;
+Finalizando idealização do design;
+<br />
 
+##Projeto
 Projeto no figma: https://www.figma.com/file/xoFmVjXE6zZqZXJeMon6ZL/RpGaming?node-id=839%3A27
 
 Versao flutter 3.0.5
