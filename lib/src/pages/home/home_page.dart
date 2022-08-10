@@ -14,24 +14,11 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends AuthRequiredState<HomePage> {  
-  // final _usernameController = TextEditingController();
-  // final _websiteController = TextEditingController();
+class _HomePageState extends AuthRequiredState<HomePage> { 
   var _loading = true;
 
   User? sessionUser;
   UserInfo? userInfo;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-
-  //   // recoverSupabaseSession();
-  //   Timer.run(() => load());
-  // }
-
-  // load() async {
-  // }
 
   Future<void> _signOut() async {
     if(mounted){

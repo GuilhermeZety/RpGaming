@@ -77,7 +77,7 @@ class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
         name: session.user!.userMetadata['full_name'],
         nickname: session.user!.userMetadata['nickname'] == null ? session.user!.userMetadata['full_name'].split(" ").first : session.user!.userMetadata['nickname'],
         last_name: session.user!.userMetadata['full_name'].split(" ").length > 1 ? session.user!.userMetadata['full_name'].split(" ").last : null,
-        name_provider: 'discord',
+        name_provider: 'discord', //trocar
         avatar_url: session.user!.userMetadata['avatar_url'],
         updated_at: DateTime.now()
       );

@@ -44,8 +44,14 @@ dependencies:
   image_picker: ^0.8.5+3
   oauth2: ^2.0.0
   flutter_inappwebview: ^5.4.3+7
+  mobx:
+  flutter_mobx:
+  provider:
+  get_it:
 
 dev_dependencies:
+  mobx_codegen:
+  build_runner:
   flutter_test:
     sdk: flutter
 

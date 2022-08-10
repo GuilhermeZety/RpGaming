@@ -3,9 +3,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:rpgaming/main.dart';
 import 'package:rpgaming/src/api/auth_state.dart';
+import 'package:rpgaming/src/pages/load/animated_logo.dart';
 import 'package:rpgaming/src/pages/load/load_viewmodel.dart';
+import 'package:rpgaming/src/pages/load/wave.dart';
 
 
 class LoadPage extends StatefulWidget {
@@ -40,13 +43,25 @@ class _LoadPageState extends AuthState<LoadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: 
-      AnimatedBuilder(
-        animation: controller.changed,
-        builder: (context, child) => Stack(
-          children: [            
-            controller.waveLeft(const Color(0xFF666CDE)),
-            controller.waveRight(const Color(0xFF06071A)),
-            controller.animatedLogo()
+      Observer(
+        builder: (_) => 
+        Stack(
+          children: [  
+            Wave(
+              positionBottom: controller.init ? MediaQuery.of(context).size.height * 0.9 - 2000 : -1850, 
+              color: const Color(0xFF666CDE), 
+              left: true,
+              durationAnimateWave: controller.durationAnimateWave, 
+              horizontalPosition: controller.position
+            ),  
+            Wave(
+              positionBottom: controller.init ? MediaQuery.of(context).size.height * 0.9 - 2000 : -1850, 
+              color: const Color(0xFF06071A), 
+              left: false,
+              durationAnimateWave: controller.durationAnimateWave, 
+              horizontalPosition: controller.position
+            ),
+            AnimatedLogo(angulo: controller.angulo, showLogo: controller.showLogo)
           ],
         ),
       )
