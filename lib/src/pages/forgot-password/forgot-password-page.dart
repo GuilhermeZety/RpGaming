@@ -40,6 +40,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             const Logo(),
             const SizedBox(height: 20,),
             Container(
+              constraints: BoxConstraints(
+                maxWidth: 500
+              ),
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(

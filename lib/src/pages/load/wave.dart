@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 
 class Wave extends StatelessWidget {
   const Wave({Key? key, 
@@ -19,27 +18,24 @@ class Wave extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Observer(
-      builder: (_) => left == true ?
-        AnimatedPositioned(
-          bottom: positionBottom,          
-          left: horizontalPosition,
-          curve: Curves.fastOutSlowIn,
-          duration: Duration(milliseconds: durationAnimateWave),
-          child: Image.asset('assets/images/waves.png', color: color,
-          ) 
+    return left == true ?
+      AnimatedPositioned(
+        bottom: positionBottom,          
+        left: horizontalPosition,
+        curve: Curves.fastOutSlowIn,
+        duration: Duration(milliseconds: durationAnimateWave),
+        child: Image.asset('assets/images/waves.png', color: color,
+        ) 
+      )
+      :
+      AnimatedPositioned(
+        bottom: positionBottom,          
+        right: horizontalPosition,
+        curve: Curves.fastOutSlowIn,
+        duration: Duration(milliseconds: durationAnimateWave),
+        child: Image.asset('assets/images/waves.png', 
+          color: color,
         )
-        :
-        AnimatedPositioned(
-          bottom: positionBottom,          
-          right: horizontalPosition,
-          curve: Curves.fastOutSlowIn,
-          duration: Duration(milliseconds: durationAnimateWave),
-          child: Image.asset('assets/images/waves.png', 
-            color: color,
-          )
-        )
-      
-    );
+      );
   }
 }

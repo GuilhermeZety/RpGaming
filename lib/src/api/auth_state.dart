@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:rpgaming/main.dart';
-import 'package:rpgaming/src/Util/navigate.dart';
-import 'package:rpgaming/src/models/UserInfo.dart';
-import 'package:rpgaming/src/pages/forgot-password/change-password-page.dart';
-import 'package:rpgaming/src/pages/home/home_page.dart';
-import 'package:rpgaming/src/pages/login/login_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:rpgaming/src/Util/constants.dart';
+
+import '../../main.dart';
+import '../Util/constants.dart';
+import '../Util/navigate.dart';
+import '../models/UserInfo.dart';
+import '../pages/forgot-password/change-password-page.dart';
+import '../pages/home/home_page.dart';
+import '../pages/login/login_page.dart';
 
 class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
   @override
@@ -47,8 +48,11 @@ class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
     else if(message == 'Email link is invalid or has expired'){
       context.showWarningSnackBar(message: 'Link de email inválido ou expirado');
     }
+    else if(message == 'Internal server error'){
+      // context.showWarningSnackBar(message: 'Link de email inválido ou expirado');
+    }
     else{
-      context.showWarningSnackBar(message: message);
+      // context.showWarningSnackBar(message: message);
     }
   }
 
@@ -69,15 +73,15 @@ class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
     }
   }
 
-
   _updateUser(Session session) async {
+
     final newUser = UserInfo(
         id: session.user!.id, 
         created_at: DateTime.parse(session.user!.createdAt),
         name: session.user!.userMetadata['full_name'],
         nickname: session.user!.userMetadata['nickname'] == null ? session.user!.userMetadata['full_name'].split(" ").first : session.user!.userMetadata['nickname'],
         last_name: session.user!.userMetadata['full_name'].split(" ").length > 1 ? session.user!.userMetadata['full_name'].split(" ").last : null,
-        name_provider: 'discord', //trocar
+        name_provider: session.providerToken, //trocar
         avatar_url: session.user!.userMetadata['avatar_url'],
         updated_at: DateTime.now()
       );
@@ -88,6 +92,5 @@ class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
         context.showWarningSnackBar(message: resp.error!.message);
       }
   }
-
   
 }

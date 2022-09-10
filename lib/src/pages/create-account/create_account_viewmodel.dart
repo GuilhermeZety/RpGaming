@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:rpgaming/src/Util/constants.dart';
-import 'package:rpgaming/src/Util/navigate.dart';
-import 'package:rpgaming/src/enums/gender_person.dart';
+import '../../Util/constants.dart';
+import '../../Util/navigate.dart';
+import '../../enums/gender_person.dart';
 
-import 'package:rpgaming/src/pages/create-account/continue_create_account_page.dart';
-import 'package:rpgaming/src/pages/home/home_page.dart';
+import 'continue_create_account_page.dart';
+import '../home/home_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CreateAccountViewModel extends ChangeNotifier {
@@ -18,6 +18,7 @@ class CreateAccountViewModel extends ChangeNotifier {
   var dateController = ValueNotifier<TextEditingController>(TextEditingController());
   var genderController = ValueNotifier<TextEditingController>(TextEditingController());
   var genderPerson = ValueNotifier<GenderPerson>(GenderPerson.male);
+
 
   Future<bool> _signIn(context, controller) async {
     try{

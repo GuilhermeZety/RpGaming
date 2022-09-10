@@ -1,6 +1,5 @@
 import 'dart:async';
 
-
 import 'package:mobx/mobx.dart';
 
 part 'load_viewmodel.g.dart';
@@ -34,16 +33,16 @@ abstract class _LoadViewModelBase with Store {
   void setAngulo(double _) => angulo = _;
 
   load() async {
-      init = true;
-      position = 0;
-        
-      Timer(Duration(milliseconds: durationAnimateWave - 2000), () => setShowLogo(true));
-      Timer(Duration(milliseconds: durationAnimateWave), () {
-        Timer.periodic(const Duration(milliseconds: 3000), (timer) { 
-          setAngulo(angulo + 4/ 8);
-          setDurationAnimateWave(3000);
-          setNewPosition();
-        });
+    init = true;
+    position = 0;
+      
+    Timer(Duration(milliseconds: durationAnimateWave - 2000), () => setShowLogo(true));
+    Timer(Duration(milliseconds: durationAnimateWave), () {
+      Timer.periodic(const Duration(milliseconds: 3000), (timer) { 
+        setAngulo(angulo + 4/ 8);
+        setDurationAnimateWave(3000);
+        setNewPosition();
+      });
     });
   }
 

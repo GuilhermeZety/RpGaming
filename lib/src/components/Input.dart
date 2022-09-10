@@ -111,38 +111,44 @@ class _InputState extends State<Input> {
       }
     }
 
-    return TextFormField(
-      controller: widget.controller,
-      initialValue: widget.initialText,
-      onTap: widget.onTap,
-      onChanged: widget.onchange != null ? (e) => widget.onchange!() : null,
-      readOnly: widget.type == TextInputType.datetime ? true : false,
-      minLines: 1,
-      maxLines: widget.big ? 7 : 1,
-      decoration: InputDecoration(
-        border: widget.big ? OutlineInputBorder() : const UnderlineInputBorder(),
-        label: widget.label,
-        hintText: widget.hintText,
-        suffixIcon: widget.type == TextInputType.visiblePassword ?        
-        IconButton(
-          icon: Icon(
-              passwordVisible
-              ? Icons.visibility_off
-              : Icons.visibility,
-              color: Theme.of(context).secondaryHeaderColor,
+    return Container(
+      height: 83,
+      child: TextFormField(
+        controller: widget.controller,
+        initialValue: widget.initialText,
+        onTap: widget.onTap,
+        onChanged: widget.onchange != null ? (e) => widget.onchange!() : null,
+        readOnly: widget.type == TextInputType.datetime ? true : false,
+        minLines: 1,
+        maxLines: widget.big ? 7 : 1,
+        decoration: InputDecoration(
+          border: widget.big ? OutlineInputBorder() : const UnderlineInputBorder(),
+          label: widget.label,
+          hintText: widget.hintText,
+          suffixIcon: widget.type == TextInputType.visiblePassword ?        
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              child: Icon(
+                  passwordVisible
+                  ? Icons.visibility_off
+                  : Icons.visibility,
+                  color: Theme.of(context).secondaryHeaderColor,
+                  ),
+              onTap: () {
+                  setState(() {
+                      passwordVisible = !passwordVisible;
+                  });
+                },
               ),
-          onPressed: () {
-              setState(() {
-                  passwordVisible = !passwordVisible;
-              });
-            },
           )
-        : null
+          : null
+        ),
+        validator: validator,
+        
+        keyboardType: widget.type,
+        obscureText: widget.obscure ? passwordVisible : false,
       ),
-      validator: validator,
-      
-      keyboardType: widget.type,
-      obscureText: widget.obscure ? passwordVisible : false,
     );
   }
 }

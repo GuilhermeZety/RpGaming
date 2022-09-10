@@ -14,9 +14,9 @@ class _LogoState extends State<Logo> {
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: const [
+      children: [
         Text('RpGaming', style: TextStyle(color: Color(0xFFD7D7D7), fontFamily: 'Press Start 2P', fontSize: 25)),
-        Text('.', style: TextStyle(color: Color(0xFF7A1AC6), fontFamily: 'Press Start 2P', fontSize: 25)),
+        Text('.', style: TextStyle(color: Theme.of(context).primaryColor, fontFamily: 'Press Start 2P', fontSize: 25)),
       ],
     );
   }

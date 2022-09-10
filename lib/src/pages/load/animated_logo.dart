@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:rpgaming/src/components/Logo.dart';
+
+import '../../components/Logo.dart';
 
 class AnimatedLogo extends StatelessWidget {
   const AnimatedLogo({Key? key, required this.showLogo, required this.angulo}) : super(key: key);

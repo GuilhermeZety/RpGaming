@@ -1,9 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:rpgaming/src/models/UserInfo.dart';
-import 'package:rpgaming/src/api/auth_required_state.dart';
-import 'package:rpgaming/src/Util/constants.dart';
+import '../../components/bars/BottomMenuBar.dart';
+import '../../Util/NetworkInfo.dart';
+import '../../components/bars/navbar/Navbar.dart';
+import '../../components/bars/UserMenuBar.dart';
+import '../../models/UserInfo.dart';
+import '../../api/auth_required_state.dart';
+import '../../Util/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,11 +18,24 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
+
 class _HomePageState extends AuthRequiredState<HomePage> { 
   var _loading = true;
 
   User? sessionUser;
   UserInfo? userInfo;
+
+  bool hasInternet = false;
+
+  @override
+  initState() {
+    super.initState();
+    Timer.run(() => onLoad());
+  }   
+
+  onLoad() async {
+    hasInternet = await hasInternetConnection();
+  }
 
   Future<void> _signOut() async {
     if(mounted){
@@ -92,35 +109,126 @@ class _HomePageState extends AuthRequiredState<HomePage> {
     super.dispose();
   }
 
-  selectImage() async {
-    // final ImagePicker _picker = ImagePicker();
-
-    // final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      backgroundColor: Theme.of(context).backgroundColor,
+      body: SafeArea(        
         child: 
         _loading ?
-          Center(child: CircularProgressIndicator(),)
+          Center(child: CircularProgressIndicator( color: Theme.of(context).primaryColor,))
         :
-        ListView(
-          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
-          children: [
-            GestureDetector(
-              onTap: () async {await selectImage();},
-              child: CircleAvatar(radius: 40, child: userInfo != null ? userInfo!.avatar_url != null ? ClipOval(child: Image.network(userInfo!.avatar_url!)) : null : null, )
-            ),
-            // Text(userInfo!.nickname!),
-            Text(sessionUser?.email ?? 'email'),
-            // Text(userInfo!.updated_at.toIso8601String()),
-            const SizedBox(height: 18),
-            ElevatedButton(onPressed: () async {await _signOut();} , child: const Text('Sign Out')),
-          ],
-        ),
+        getContentBasedInOrientation()
+        
       ),
+      bottomNavigationBar: getWhatSize(context) == Orientation.portrait ? BottomMenuBar(homeIsActive: true, colorBack: Theme.of(context).backgroundColor) : null,
     );
+  }
+
+  getContentBasedInOrientation(){
+    
+    if(getWhatSize(context) == Orientation.landscape){
+      return Row(
+        children: [
+          Navbar(homeIsActive: true,)
+        ],
+      );
+    }
+
+    return Column(
+          children: [        
+            //topMenu      
+            UserMenuBar(userInfo: userInfo),            
+            Expanded(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).backgroundColor,
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))
+                ),
+                padding: EdgeInsets.only(right: 15, left: 15, top: 20),
+                child: NotificationListener<OverscrollIndicatorNotification>(
+                  onNotification: (OverscrollIndicatorNotification overscroll) {
+                    overscroll.disallowIndicator();
+                    return true;
+                  },
+                  child: SingleChildScrollView(                                 
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Container(
+                          color: Colors.grey.withOpacity(0.2),
+                          width: 140,
+                          height: 20,
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Container(
+                              color: Colors.grey.withOpacity(0.2),
+                              width: 180,
+                              height: 200,
+                            ),
+                            SizedBox(width: 10),
+                            Container(
+                              color: Colors.grey.withOpacity(0.2),
+                              width: 170,
+                              height: 200,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          color: Colors.grey.withOpacity(0.2),
+                          width: 140,
+                          height: 20,
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Container(
+                              color: Colors.grey.withOpacity(0.2),
+                              width: 180,
+                              height: 200,
+                            ),
+                            SizedBox(width: 10),
+                            Container(
+                              color: Colors.grey.withOpacity(0.2),
+                              width: 170,
+                              height: 200,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          color: Colors.grey.withOpacity(0.2),
+                          width: 100,
+                          height: 20,
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Container(
+                              color: Colors.grey.withOpacity(0.2),
+                              width: 280,
+                              height: 200,
+                            ),
+                            SizedBox(width: 10),
+                            Container(
+                              color: Colors.grey.withOpacity(0.2),
+                              width: 70,
+                              height: 200,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
   }
 }

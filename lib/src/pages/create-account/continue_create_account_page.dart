@@ -28,7 +28,7 @@ class ContinueCreateAccountPage extends StatefulWidget {
 class _ContinueCreateAccountPageState extends State<ContinueCreateAccountPage> {
   late CreateAccountViewModel controller = CreateAccountViewModel();
 
-Future<void> _signUp() async {  
+  Future<void> _signUp() async {  
     if (controller.formKey.currentState!.validate()) {
       controller.correctFields();
 
@@ -36,6 +36,7 @@ Future<void> _signUp() async {
         controller.emailController.value.text,
         controller.passwordController.value.text
       );
+      
       if(response.error != null){
         context.showWarningSnackBar(message: response.error!.message);
       }
@@ -62,6 +63,7 @@ Future<void> _signUp() async {
       }
     }
   }
+  
   @override
   Widget build(BuildContext context) {
     if(widget.controller != null){
@@ -82,6 +84,11 @@ Future<void> _signUp() async {
                 height: MediaQuery.of(context).viewInsets.bottom == 0 ? MediaQuery.of(context).size.height * 0.8 : MediaQuery.of(context).size.height * 0.5,
                 margin: const EdgeInsets.only(left: 10, right: 10),
                 padding: const EdgeInsets.all(10),
+
+                constraints: BoxConstraints(
+                  maxWidth: 600,
+                  maxHeight: 700
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFF1D1D27),
                   borderRadius: BorderRadius.circular(20)

@@ -48,6 +48,9 @@ dependencies:
   flutter_mobx:
   provider:
   get_it:
+  connectivity: ^3.0.6
+  connectivity_plus: ^2.3.6+1
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   mobx_codegen:
@@ -91,6 +94,7 @@ flutter:
     - assets/images/svg/facebook.svg
     - assets/images/svg/discord.svg
     - assets/images/svg/twitch.svg
+    - assets/images/svg/no-signal.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

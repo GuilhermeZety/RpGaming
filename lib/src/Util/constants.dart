@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:rpgaming/src/Util/navigate.dart';
-import 'package:rpgaming/src/pages/report-error/report_error_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../pages/report-error/report_error_page.dart';
+import 'navigate.dart';
 
 final supabase = Supabase.instance.client;
 final supabaseInstanse = Supabase.instance;
 
 extension ShowSnackBar on BuildContext {
-
+  
   _closeSnackbar(){
     ScaffoldMessenger.of(this).clearSnackBars();
   }
@@ -122,4 +123,8 @@ extension ShowSnackBar on BuildContext {
       icon: Icon(FontAwesomeIcons.check, color: Color(0xFF50dc6c), size: 18,)
     );
   }
+}
+
+Orientation getWhatSize(BuildContext c){
+  return MediaQuery.of(c).orientation;
 }

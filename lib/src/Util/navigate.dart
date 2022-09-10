@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rpgaming/src/Util/custom_page_route.dart';
+import 'custom_page_route.dart';
 
 Future<void> to(BuildContext context, Widget page) async {
   Navigator.of(context).pushAndRemoveUntil(

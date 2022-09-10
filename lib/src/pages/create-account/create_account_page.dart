@@ -3,12 +3,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rpgaming/src/Util/constants.dart';
 import 'package:rpgaming/src/Util/navigate.dart';
 import 'package:rpgaming/src/components/Button.dart';
 import 'package:rpgaming/src/components/Input.dart';
 import 'package:rpgaming/src/components/Logo.dart';
 import 'package:rpgaming/src/pages/create-account/create_account_viewmodel.dart';
 import 'package:rpgaming/src/pages/login/login_page.dart';
+import 'package:rpgaming/src/pages/login/login_viewmodel.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../models/ResponseModel.dart';
+import '../home/home_page.dart';
 
 class CreateAccountPage extends StatefulWidget {
   static const String route = '/create-account';
@@ -20,14 +26,180 @@ class CreateAccountPage extends StatefulWidget {
 
 class _CreateAccountPageState extends State<CreateAccountPage> {
   final controller = CreateAccountViewModel();
+  final loginController = LoginViewModel();
+
+  
+  handleSignIn(Provider? provider) async {
+    ResponseModel response = await loginController.signIn(provider);
+
+    if(response.success){
+      context.showSuccessSnackBar(message: response.message);
+      to(context, HomePage());
+    }
+    else if(response.isWarning){
+      context.showWarningSnackBar(message: response.message);
+    }
+    else {
+      context.showErrorSnackBar(error: response.message);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        color: Theme.of(context).backgroundColor,
         width: MediaQuery.of(context).size.width,
         constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height),
-        child: Stack(
+        child: getContentBasedInSize()
+      ),
+    );
+  }
+
+
+  getContentBasedInSize(){
+
+    if(getWhatSize(context) == Orientation.landscape){
+      return Row(          
+        children: [
+          Container(
+            child: Image.asset('assets/images/wallpaper.png', width: MediaQuery.of(context).size.width * 0.45, height: MediaQuery.of(context).size.height, fit: BoxFit.cover, alignment: Alignment.bottomCenter)
+          ),
+
+          Container(
+            width: MediaQuery.of(context).size.width * 0.55,
+            child: Center(
+              child: Container(
+                width: 500,
+                height: 700,
+                padding: EdgeInsets.all(40),
+                child: Form(
+                  key: controller.formKey,
+                  onChanged: () => controller.formKey.currentState!.validate(),
+                  child: CustomScrollView(
+                      scrollDirection: Axis.vertical,
+                      slivers: [
+                        SliverFillRemaining(
+                          hasScrollBody: false,
+                          child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Criar conta no', style: TextStyle(fontSize: 40),),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SizedBox(width: 40,),
+                                    Logo(),
+                                  ],
+                                )
+                              ],
+                            ),   
+                            SizedBox(
+                              height: 20,
+                            ),
+                            SizedBox(
+                              width: 300,
+                              child: const Text('Insira suas informações abaixo ou inscreva-se com uma conta social',textAlign: TextAlign.center,)
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),         
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [                                    
+                                IconButton(
+                                  iconSize: 35,
+                                  icon: SvgPicture.asset('assets/images/svg/google.svg',
+                                    semanticsLabel: 'Label'
+                                  ),
+                                  onPressed: () => handleSignIn(Provider.google),
+                                ),
+                                IconButton(
+                                  iconSize: 37,
+                                  icon: SvgPicture.asset('assets/images/svg/facebook.svg',
+                                    semanticsLabel: 'Label'
+                                  ),
+                                  onPressed: () => handleSignIn(Provider.facebook),
+                                ),
+                                IconButton(
+                                  iconSize: 31,
+                                  icon: SvgPicture.asset('assets/images/svg/discord.svg',
+                                    semanticsLabel: 'Label'
+                                  ),
+                                  onPressed: () => handleSignIn(Provider.discord),
+                                ),
+                                IconButton(
+                                  iconSize: 31,
+                                  icon: SvgPicture.asset('assets/images/svg/twitch.svg',
+                                    semanticsLabel: 'Label'
+                                  ),
+                                  onPressed: () => handleSignIn(Provider.twitch),
+                                ),
+                              ],
+                            ),
+                            Input(
+                              controller: controller.emailController.value,
+                              type: TextInputType.emailAddress,                            
+                              label: const Text('Email'),
+                              hintText: 'insira um email...'
+                            ),
+                            Input(
+                              controller: controller.passwordController.value,
+                              type: TextInputType.visiblePassword,    
+                              label: const Text('Senha'),
+                              hintText: 'insira uma senha...',
+                              obscure: true
+                            ), 
+                            Input(
+                              controller: controller.repeatPasswordController.value,
+                              type: TextInputType.visiblePassword,    
+                              label: const Text('Confirmar senha'),
+                              hintText: 'confirme sua senha...',
+                              obscure: true,
+                              compare: controller.passwordController.value
+                            ), 
+                            const SizedBox(height: 40),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Button(
+                                  onPress: () async {
+                                    await pushNamed(context, LoginPage.route);
+                                  },
+                                  text: 'Voltar',
+                                  colorInverted: true,
+                                  size: Size(200, 70),
+                                  bold: true,
+                                  fontSize: 20
+                                ),
+                                Button(
+                                  onPress: () async => controller.validate(context, controller),
+                                  text: 'Continuar', 
+                                  size: Size(200, 70),
+                                  bold: true,
+                                  fontSize: 20
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 6),
+                          ],
+                        ),
+                      )
+                    ]
+
+                  ),
+                )
+              )
+            )
+          )
+        ]
+      );
+    }
+    return Stack(
               children: [       
                 Image.asset('assets/images/wallpaper.png', fit: BoxFit.cover, width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height * 0.45, alignment: Alignment.bottomCenter),   
                 Positioned(
@@ -53,23 +225,18 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    Text('Criar conta no', style: TextStyle(fontSize: 40),),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: const [
-                                        Text('Criar conta no', style: TextStyle(fontSize: 30),),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: const [
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SizedBox(width: 40),
                                         Logo(),
                                       ],
-                                    ),
-                                    const SizedBox(height: 10),
-                                    const Text('Insira suas informações abaixo ou faça a inscrição com uma conta social',textAlign: TextAlign.center,)
+                                    )
                                   ],
-                                ),                            
+                                ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [                                    
@@ -124,7 +291,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                                   obscure: true,
                                   compare: controller.passwordController.value
                                 ), 
-                                const SizedBox(height: 40),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
@@ -159,8 +325,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 ),
                 
               ]
-            )
-      ),
-    );
+            );
   }
 }

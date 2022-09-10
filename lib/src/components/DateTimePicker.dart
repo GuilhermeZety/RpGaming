@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:rpgaming/src/components/Input.dart';
+
+import 'Input.dart';
 
 class InputDateTime extends StatefulWidget {
   const InputDateTime({Key? key, required this.dateController, required this.label, this.onchange}) : super(key: key);

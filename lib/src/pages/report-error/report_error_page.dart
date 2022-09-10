@@ -49,6 +49,9 @@ class _ReportErrorPageState extends State<ReportErrorPage> {
           children: [
             const Logo(),
             Container(
+              constraints: BoxConstraints(
+                maxWidth: 500
+              ),
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
@@ -70,7 +73,12 @@ class _ReportErrorPageState extends State<ReportErrorPage> {
                     ),
                     Container(
                       padding: const EdgeInsets.all(20),
-                      child: Input(type: TextInputType.text, label: const Text('Resumo'), hintText: 'Insira aonde, quando e como aconteceu...', controller: textController, big: true)
+                      child: Input(type: TextInputType.text, 
+                        label: const Text('Resumo'), 
+                        hintText: 'Insira aonde, quando e como aconteceu...', 
+                        controller: textController, 
+                        big: true
+                      )
                     ),
                     const SizedBox(height: 5,),
                     Row(
