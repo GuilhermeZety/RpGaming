@@ -18,7 +18,12 @@ Versao flutter 3
 --Siga após as imagens para ver tudo que será desenvolvido--
 
 <br />
+<div style='display: flex'>
+  <img src="https://user-images.githubusercontent.com/90266977/189518202-44205ee1-4ebb-429a-8e5c-2c9a1a9dfbf5.png" width='500'/>
+  <img src="https://user-images.githubusercontent.com/90266977/189518490-ab4767a6-6405-45a9-a40a-8338f3ef73f4.png" width='500'/>
+</div>
+<br />
+<div style='display: flex'>
+  <img src="https://user-images.githubusercontent.com/90266977/189518517-fefec577-85ff-4993-a72a-a0c799a1e198.png" height='500'/>
+</div>
 
-![HomePage - Desktop](https://user-images.githubusercontent.com/90266977/189518202-44205ee1-4ebb-429a-8e5c-2c9a1a9dfbf5.png)
-![NotificationPage - Desktop1](https://user-images.githubusercontent.com/90266977/189518221-d53a6263-9204-4d44-8914-b1d4a30eb901.png)
-![PersonaPage 1](https://user-images.githubusercontent.com/90266977/189518222-5bc85a0c-ce17-43fb-9ff0-8f2613e65988.png)
