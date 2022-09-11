@@ -3,8 +3,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rpgaming/src/Util/constants.dart';
 import 'package:rpgaming/src/Util/navigate.dart';
+import 'package:rpgaming/src/Util/toasts.dart';
 import 'package:rpgaming/src/components/Button.dart';
 import 'package:rpgaming/src/components/Input.dart';
 import 'package:rpgaming/src/components/Logo.dart';
@@ -28,19 +30,29 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   final controller = CreateAccountViewModel();
   final loginController = LoginViewModel();
 
+  FToast fToast = FToast();
+  
+  @override
+  initState() {
+    super.initState();
+    fToast.init(context);
+  }   
+
   
   handleSignIn(Provider? provider) async {
-    ResponseModel response = await loginController.signIn(provider);
+    ResponseModel? response = await loginController.signIn(provider);
 
-    if(response.success){
-      context.showSuccessSnackBar(message: response.message);
-      to(context, HomePage());
-    }
-    else if(response.isWarning){
-      context.showWarningSnackBar(message: response.message);
-    }
-    else {
-      context.showErrorSnackBar(error: response.message);
+    if(response != null){
+      if(response.success){
+        showSuccessToast(fToast: fToast, message: response.message);
+        to(context, HomePage());
+      }
+      else if(response.isWarning){
+        showWarningToast(fToast: fToast, message: response.message);
+      }
+      else {
+        showErrorToast(fToast: fToast, error: response.message);
+      }
     }
   }
 

@@ -16,6 +16,7 @@ abstract class _CustomThemeBase with Store {
     secondaryHeaderColor: const Color(0xFFAAAAAA),
     canvasColor: const Color(0xFFAAAAAA),
     backgroundColor: const Color(0xFF121222),     
+    cardColor: const Color(0xFF20203F),     
     scaffoldBackgroundColor: const Color(0xFF06071A),        
     primarySwatch: createMaterialColor(const Color(0xFF666CDE)),         
     // cardColor: const Color(0xFFAAAAAA),

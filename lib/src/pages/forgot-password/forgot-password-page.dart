@@ -1,12 +1,15 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rpgaming/src/Util/constants.dart';
 import 'package:rpgaming/src/Util/navigate.dart';
 import 'package:rpgaming/src/components/Button.dart';
 import 'package:rpgaming/src/components/Input.dart';
 import 'package:rpgaming/src/components/Logo.dart';
 import 'package:rpgaming/src/pages/login/login_page.dart';
+
+import '../../Util/toasts.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   static const String route = '/forgot-password';
@@ -20,11 +23,21 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
 
+  
+  FToast fToast = FToast();
+  
+  @override
+  void initState() {
+    super.initState();
+    fToast.init(context);
+  }
+
   void _sendEmail() async {    
     if (_formKey.currentState!.validate()) {
       var response = await supabase.auth.api.resetPasswordForEmail(emailController.text);
+      
       if(response.error == null){
-        context.showSuccessSnackBar(message: 'Enviado com sucesso, verifique seu email!');
+        showSuccessToast(fToast: fToast, message: 'Enviado com sucesso, verifique seu email!');
         to(context, LoginPage());
       }
     }    

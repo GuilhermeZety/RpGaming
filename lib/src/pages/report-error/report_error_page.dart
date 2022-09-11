@@ -3,8 +3,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rpgaming/src/Util/constants.dart';
 import 'package:rpgaming/src/Util/navigate.dart';
+import 'package:rpgaming/src/Util/toasts.dart';
 import 'package:rpgaming/src/components/Button.dart';
 import 'package:rpgaming/src/components/Input.dart';
 import 'package:rpgaming/src/components/Logo.dart';
@@ -24,6 +26,14 @@ class _ReportErrorPageState extends State<ReportErrorPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController textController = TextEditingController();
 
+  FToast fToast = FToast();
+  
+  @override
+  initState() {
+    super.initState();
+    fToast.init(context);
+  }   
+
   _sendReport() async{
      final report = {
       'error': widget.error,
@@ -33,10 +43,12 @@ class _ReportErrorPageState extends State<ReportErrorPage> {
     final response = await supabase.from('log_reports').upsert(report).execute();
 
     if (response.error != null) {
-      context.showWarningSnackBar(message: response.error!.message);
+      showWarningToast(fToast: fToast, message: response.error!.message);
+      // to(context, LoginPage());
     } else {
       //success
-      context.showSuccessSnackBar(message: 'Enviado Com Sucesso');
+      showSuccessToast(fToast: fToast, message: 'Enviado Com Sucesso');
+      to(context, LoginPage());
     }
   }
 

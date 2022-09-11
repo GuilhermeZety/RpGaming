@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../main.dart';
 import '../Util/constants.dart';
 import '../Util/navigate.dart';
+import '../Util/toasts.dart';
 import '../models/UserInfo.dart';
 import '../pages/forgot-password/change-password-page.dart';
 import '../pages/home/home_page.dart';
 import '../pages/login/login_page.dart';
 
 class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
+  FToast fToast = FToast();
+
   @override
   void onUnauthenticated() {
     if (mounted) {
@@ -19,6 +23,8 @@ class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
 
   @override
   void onAuthenticated(Session session) async {
+    fToast.init(context);
+
     if (mounted) {
       if(resetingPassword){
         print('reseting');
@@ -26,7 +32,7 @@ class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
       else{
         await _update(session);
       }
-      context.showSuccessSnackBar(message: 'logado com sucesso');
+      showSuccessToast(fToast: fToast, message: 'logado com sucesso');
       to(context, HomePage());
       // pushNamed(context, HomePage.route);
     }
@@ -42,11 +48,13 @@ class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
 
   @override
   void onErrorAuthenticating(String message) {
+    fToast.init(context);
+
     if(message == 'The resource owner or authorization server denied the request'){
-      context.showWarningSnackBar(message: 'Usuário recusou a autorização');
+      showWarningToast(fToast: fToast, message: 'Usuário recusou a autorização');
     }
     else if(message == 'Email link is invalid or has expired'){
-      context.showWarningSnackBar(message: 'Link de email inválido ou expirado');
+      showWarningToast(fToast: fToast, message: 'Link de email inválido ou expirado');
     }
     else if(message == 'Internal server error'){
       // context.showWarningSnackBar(message: 'Link de email inválido ou expirado');
@@ -74,6 +82,7 @@ class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
   }
 
   _updateUser(Session session) async {
+    fToast.init(context);
 
     final newUser = UserInfo(
         id: session.user!.id, 
@@ -89,7 +98,7 @@ class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
       final resp = await supabase.from('user').upsert(newUser.toMap()).execute();
 
       if(resp.error != null){
-        context.showWarningSnackBar(message: resp.error!.message);
+        showWarningToast(fToast: fToast, message: resp.error!.message);
       }
   }
   

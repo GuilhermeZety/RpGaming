@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rpgaming/src/pages/config/config-page.dart';
+import '../../../Util/constants.dart';
 import '../../DividerWithWidget.dart';
 import '../../Logo.dart';
 
@@ -30,13 +31,13 @@ class Navbar extends StatefulWidget {
 class _NavbarState extends State<Navbar> {
   @override
   Widget build(BuildContext context) {
-
+    
     loggout(){
-      
+      supabase.auth.signOut();
     }
     
     return Container(
-      width: 400,
+      width: 300,
       color: Theme.of(context).scaffoldBackgroundColor,
       padding: EdgeInsets.all(30),
       height: MediaQuery.of(context).size.height,
@@ -78,6 +79,7 @@ class _NavbarState extends State<Navbar> {
             mainAxisSize: MainAxisSize.min,
             children: [
               DividerWithWidget(),
+              SizedBox(height: 20),
               NavbarItem(
                 content: 'Configurações',
                 icon: FontAwesomeIcons.gear,
@@ -88,7 +90,7 @@ class _NavbarState extends State<Navbar> {
                 content: 'Sair',
                 icon: Icons.logout,
                 isActive: widget.userIsActive,
-                onTap: loggout(),
+                onTap: () => loggout(),
               ),
               
             ],
@@ -103,12 +105,10 @@ class _NavbarState extends State<Navbar> {
       width: 20,
       height: 20,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(100)        
+        color: Theme.of(context).primaryColor,                
+        borderRadius: BorderRadius.circular(100)
       ),
-      // child: Center(
-      //   child: Text('5'),
-      // ),
+      child: Center(child: Text('8', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Theme.of(context).scaffoldBackgroundColor),)),
     );
   }
   

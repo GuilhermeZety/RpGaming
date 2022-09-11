@@ -3,9 +3,13 @@
 
 
 
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:rpgaming/src/pages/notification/notification-page.dart';
 import 'Cache.dart';
 import 'styles/CustomTheme.dart';
 
@@ -63,6 +67,7 @@ class _AppWidgetState extends State<AppWidget> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior: MyCustomScrollBehavior(),
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       // theme: customTheme.theme,
@@ -77,9 +82,21 @@ class _AppWidgetState extends State<AppWidget> {
         '/forgot-password': (BuildContext context) => const ForgotPasswordPage(),
         '/change-password': (BuildContext context) => const ChangePasswordPage(),
         '/report-error': (BuildContext context) => const ReportErrorPage(error: 'null',),
-        '/home-page': (BuildContext context) => const HomePage(),
+        '/home': (BuildContext context) => const HomePage(),
+        '/notifications': (BuildContext context) => const NotificationPage(),
       },
-      initialRoute: '/home-page',
+      initialRoute: '/',
     );
   }
 }
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  // Override behavior methods and getters like dragDevices
+  @override
+  Set<PointerDeviceKind> get dragDevices => { 
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+    // etc.
+  };
+}
+

@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:rpgaming/src/Util/constants.dart';
 import 'package:rpgaming/src/Util/navigate.dart';
@@ -13,6 +14,8 @@ import 'package:rpgaming/src/enums/gender_person.dart';
 import 'package:rpgaming/src/pages/create-account/create_account_viewmodel.dart';
 import 'package:rpgaming/src/pages/login/login_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../Util/toasts.dart';
 
 class ContinueCreateAccountPage extends StatefulWidget {
   static const String route = '/continue-create-account';
@@ -27,6 +30,14 @@ class ContinueCreateAccountPage extends StatefulWidget {
 
 class _ContinueCreateAccountPageState extends State<ContinueCreateAccountPage> {
   late CreateAccountViewModel controller = CreateAccountViewModel();
+  
+  FToast fToast = FToast();
+
+  @override
+  initState() {
+    super.initState();
+    fToast.init(context);
+  }   
 
   Future<void> _signUp() async {  
     if (controller.formKey.currentState!.validate()) {
@@ -38,7 +49,7 @@ class _ContinueCreateAccountPageState extends State<ContinueCreateAccountPage> {
       );
       
       if(response.error != null){
-        context.showWarningSnackBar(message: response.error!.message);
+        showWarningToast(fToast: fToast, message: response.error!.message);
       }
       if(response.user != null){
         final informations = {
@@ -54,10 +65,10 @@ class _ContinueCreateAccountPageState extends State<ContinueCreateAccountPage> {
         final resp = await supabase.from('user').upsert(informations).execute();
 
         if(resp.error != null){
-          context.showWarningSnackBar(message: response.error!.message);
+          showWarningToast(fToast: fToast, message: response.error!.message);
         }
         if(resp.data != null){
-          context.showSuccessSnackBar(message: 'cadastrado com sucesso, por favor verifique seu email para poder acessar');
+          showWarningToast(fToast: fToast, message: 'cadastrado com sucesso, por favor verifique seu email para poder acessar');
           to(context, LoginPage());
         }
       }

@@ -2,6 +2,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rpgaming/src/Util/constants.dart';
 import 'package:rpgaming/src/Util/navigate.dart';
 import 'package:rpgaming/src/components/Button.dart';
@@ -9,6 +10,8 @@ import 'package:rpgaming/src/components/Input.dart';
 import 'package:rpgaming/src/components/Logo.dart';
 import 'package:rpgaming/src/pages/home/home_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../Util/toasts.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   static const String route = '/change-password';
@@ -23,9 +26,12 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController repeatPasswordController = TextEditingController();
 
+  FToast fToast = FToast();
+  
   @override
   void initState() {
     super.initState();
+    fToast.init(context);
   }
 
   _handleResetPassword() async {
@@ -33,11 +39,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       var response = await supabase.auth.api.updateUser(await supabase.auth.currentSession!.accessToken, UserAttributes(password: passwordController.text));
 
       if(response.error == null){
-        context.showSuccessSnackBar(message: 'Senha alterada com sucesso!');
+        showSuccessToast(fToast: fToast, message: 'Senha alterada com sucesso!');
         to(context, HomePage());
       }
       else{
-        context.showWarningSnackBar(message: response.error!.message);
+        showWarningToast(fToast: fToast, message: response.error!.message);
       }
     }   
   }

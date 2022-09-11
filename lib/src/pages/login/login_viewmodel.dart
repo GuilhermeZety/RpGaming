@@ -21,7 +21,8 @@ class LoginViewModel extends ChangeNotifier {
     }
   }
 
-  Future<ResponseModel> signIn(Provider? provider) async {
+
+  Future<ResponseModel?> signIn(Provider? provider) async {
     if (provider == null) {
       if(formKey.currentState!.validate()){
         try{
@@ -68,7 +69,7 @@ class LoginViewModel extends ChangeNotifier {
     }    
     else{
       try{
-        var redirect =  kIsWeb ? 'http://localhost:54082/' : 'io.supabase.flutterquickstart://login-callback/';
+        var redirect =  kIsWeb ? 'http://localhost:5000/' : 'io.supabase.flutterquickstart://login-callback/';
         final res = await supabase.auth.signInWithProvider(
           provider,        
           options: AuthOptions(
@@ -90,9 +91,6 @@ class LoginViewModel extends ChangeNotifier {
         );
       }
     }
-    return ResponseModel(
-      isWarning: true,
-      message: 'Não houve retorno'
-    );
+    return null;
   }  
 }

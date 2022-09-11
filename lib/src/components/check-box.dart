@@ -8,8 +8,6 @@ class CheckBoxComponent extends StatelessWidget {
 
 
   onchange(bool? isTrue) {
-    print('foi');
-
     onChanged!(isTrue);
   }
 

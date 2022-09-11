@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'src/app_widget.dart';
-import 'src/pages/config/config-page.dart';
-import 'src/styles/CustomTheme.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 

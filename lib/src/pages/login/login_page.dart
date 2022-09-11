@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rpgaming/src/Util/constants.dart';
 import 'package:rpgaming/src/Util/navigate.dart';
 import 'package:rpgaming/src/api/auth_state.dart';
@@ -18,8 +19,10 @@ import 'package:rpgaming/src/pages/forgot-password/forgot-password-page.dart';
 import 'package:rpgaming/src/pages/login/login_viewmodel.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../Util/toasts.dart';
 import '../../models/ResponseModel.dart';
 import '../home/home_page.dart';
+
 
 
 class LoginPage extends StatefulWidget {
@@ -31,28 +34,42 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends AuthState<LoginPage> {
-  final controller = LoginViewModel();    
+  final controller = LoginViewModel();  
+  late FToast fToast;  
 
   @override
   initState() {
     super.initState();
+    fToast = FToast();
+    fToast.init(context);
     
     Timer.run(() => controller.onLoad(context));
   }   
 
 
   handleSignIn(Provider? provider) async {
-    ResponseModel response = await controller.signIn(provider);
-
-    if(response.success){
-      context.showSuccessSnackBar(message: response.message);
-      to(context, HomePage());
-    }
-    else if(response.isWarning){
-      context.showWarningSnackBar(message: response.message);
-    }
-    else {
-      context.showErrorSnackBar(error: response.message);
+    ResponseModel? response = await controller.signIn(provider);
+    
+    if(response != null){
+      if(response.success){
+        showSuccessToast(
+          fToast: fToast,
+          message: response.message,
+        ); 
+        to(context, HomePage());
+      }
+      else if(response.isWarning){
+        showWarningToast(
+          fToast: fToast,
+          message: response.message,
+        ); 
+      }
+      else {
+        showErrorToast(
+          fToast: fToast,
+          error: response.message,
+        ); 
+      }
     }
   }
 

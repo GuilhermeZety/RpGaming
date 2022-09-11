@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:skeletons/skeletons.dart';
+import '../../Util/toasts.dart';
 import '../../components/bars/BottomMenuBar.dart';
 import '../../Util/NetworkInfo.dart';
 import '../../components/bars/navbar/Navbar.dart';
@@ -11,7 +14,7 @@ import '../../Util/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomePage extends StatefulWidget {
-  static const String route = '/home-page';
+  static const String route = '/home';
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -26,10 +29,27 @@ class _HomePageState extends AuthRequiredState<HomePage> {
   UserInfo? userInfo;
 
   bool hasInternet = false;
+  
+  FToast fToast = FToast();
+
+
+  List<Widget> listPersonas = [
+    PersonaCard(),
+    PersonaCard(),
+    PersonaCard(),
+    PersonaCard(),
+  ];
+
+  List<Widget> listSessoes = [
+    SessoesCard(),
+    SessoesCard(),
+    SessoesCard(),
+  ];
 
   @override
   initState() {
     super.initState();
+    fToast.init(context);
     Timer.run(() => onLoad());
   }   
 
@@ -37,23 +57,7 @@ class _HomePageState extends AuthRequiredState<HomePage> {
     hasInternet = await hasInternetConnection();
   }
 
-  Future<void> _signOut() async {
-    if(mounted){
-      try{
-        var response = await supabase.auth.signOut();
-
-        if(response.error != null){
-          context.showWarningSnackBar(message: response.error!.message);
-        }
-        else{
-          context.showSuccessSnackBar(message: 'Deslogado com sucesso');
-        }
-      }
-      catch(err){
-        context.showErrorSnackBar(error: err.toString());
-      }
-    }
-  }
+  
 
   @override
   void onAuthenticated(Session session) async {
@@ -75,16 +79,16 @@ class _HomePageState extends AuthRequiredState<HomePage> {
       else{
         onUnauthenticated();
       }
-      setState(() {
-        _loading = false;      
-      });
+      // setState(() {
+      //   _loading = false;      
+      // });
     }
     catch(err){
-      context.showWarningSnackBar(message: err.toString());
+      showWarningToast(fToast: fToast, message: err.toString());
       
-      setState(() {
-        _loading = false;      
-      });
+      // setState(() {
+      //   _loading = false;      
+      // });
     }    
   }
 
@@ -97,7 +101,7 @@ class _HomePageState extends AuthRequiredState<HomePage> {
         .execute();
         
     if (response.error != null) {
-      context.showWarningSnackBar(message: response.error!.message);
+      showWarningToast(fToast: fToast, message: response.error!.message);
       return null;
     }
 
@@ -114,12 +118,7 @@ class _HomePageState extends AuthRequiredState<HomePage> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: SafeArea(        
-        child: 
-        _loading ?
-          Center(child: CircularProgressIndicator( color: Theme.of(context).primaryColor,))
-        :
-        getContentBasedInOrientation()
-        
+        child: getContentBasedInOrientation()
       ),
       bottomNavigationBar: getWhatSize(context) == Orientation.portrait ? BottomMenuBar(homeIsActive: true, colorBack: Theme.of(context).backgroundColor) : null,
     );
@@ -130,105 +129,210 @@ class _HomePageState extends AuthRequiredState<HomePage> {
     if(getWhatSize(context) == Orientation.landscape){
       return Row(
         children: [
-          Navbar(homeIsActive: true,)
+          Navbar(homeIsActive: true),
+          Container(
+            width: MediaQuery.of(context).size.width - 300,
+            height: MediaQuery.of(context).size.height,
+            padding: EdgeInsets.only(left: 20, right: 10, top: 20, bottom: 20),
+            child: ListView(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              children: [
+                  UserMenuBar(userInfo: userInfo),
+                  //title Personas
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Text('Seus Personagens', style: TextStyle(fontSize: 30)),
+                  ),
+                  //lista Personas
+                  Container(
+                    width: MediaQuery.of(context).size.width - 480,
+                    height: 360,     
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: listPersonas.length,
+                      shrinkWrap: true,                      
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 25),
+                          child: Skeleton(
+                            isLoading: _loading,
+                            skeleton: PersonaCard.getSkeleton(getWhatSize(context)),
+                            child: listPersonas[index],
+                          ),
+                        );
+                      }
+                    ),
+                  ),
+
+                  //title Sessions
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10, top: 30),
+                    child: Text('Suas Sessões', style: TextStyle(fontSize: 30)),
+                  ),
+                  //lista Sessions
+                  Container(
+                    width: MediaQuery.of(context).size.width - 480,
+                    height: 360,     
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: listSessoes.length,
+                      shrinkWrap: true,                      
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 25),
+                          child: Skeleton(
+                            isLoading: _loading,
+                            skeleton: SessoesCard.getSkeleton(getWhatSize(context)),
+                            child: listSessoes[index],
+                          ),
+                        );                        
+                      }
+                    ),
+                  ),
+                ],
+              ),
+            ),
         ],
       );
     }
 
     return Column(
-          children: [        
-            //topMenu      
-            UserMenuBar(userInfo: userInfo),            
-            Expanded(
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).backgroundColor,
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))
-                ),
-                padding: EdgeInsets.only(right: 15, left: 15, top: 20),
-                child: NotificationListener<OverscrollIndicatorNotification>(
-                  onNotification: (OverscrollIndicatorNotification overscroll) {
-                    overscroll.disallowIndicator();
-                    return true;
-                  },
-                  child: SingleChildScrollView(                                 
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Container(
-                          color: Colors.grey.withOpacity(0.2),
-                          width: 140,
-                          height: 20,
-                        ),
-                        SizedBox(height: 20),
-                        Row(
-                          children: [
-                            Container(
-                              color: Colors.grey.withOpacity(0.2),
-                              width: 180,
-                              height: 200,
-                            ),
-                            SizedBox(width: 10),
-                            Container(
-                              color: Colors.grey.withOpacity(0.2),
-                              width: 170,
-                              height: 200,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 20),
-                        Container(
-                          color: Colors.grey.withOpacity(0.2),
-                          width: 140,
-                          height: 20,
-                        ),
-                        SizedBox(height: 20),
-                        Row(
-                          children: [
-                            Container(
-                              color: Colors.grey.withOpacity(0.2),
-                              width: 180,
-                              height: 200,
-                            ),
-                            SizedBox(width: 10),
-                            Container(
-                              color: Colors.grey.withOpacity(0.2),
-                              width: 170,
-                              height: 200,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 20),
-                        Container(
-                          color: Colors.grey.withOpacity(0.2),
-                          width: 100,
-                          height: 20,
-                        ),
-                        SizedBox(height: 20),
-                        Row(
-                          children: [
-                            Container(
-                              color: Colors.grey.withOpacity(0.2),
-                              width: 280,
-                              height: 200,
-                            ),
-                            SizedBox(width: 10),
-                            Container(
-                              color: Colors.grey.withOpacity(0.2),
-                              width: 70,
-                              height: 200,
-                            ),
-                          ],
-                        ),
-                      ],
+      children: [        
+        //topMenu      
+        UserMenuBar(userInfo: userInfo),            
+        Expanded(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              color: Theme.of(context).backgroundColor,
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))
+            ),
+            padding: EdgeInsets.only(right: 15, left: 15, top: 20),
+            child: NotificationListener<OverscrollIndicatorNotification>(
+              onNotification: (OverscrollIndicatorNotification overscroll) {
+                overscroll.disallowIndicator();
+                return true;
+              },
+              child: SingleChildScrollView(                                 
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    //title Personas
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Text('Seus Personagens', style: TextStyle(fontSize: 24)),
                     ),
-                  ),
+                    //lista Personas
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 240,     
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: listPersonas.length,
+                        shrinkWrap: true,                      
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: Skeleton(
+                              isLoading: _loading,
+                              skeleton: PersonaCard.getSkeleton(getWhatSize(context)),
+                              child: listPersonas[index],
+                            ),
+                          );                          
+                        }
+                      ),
+                    ),
+                    
+                    //title Sessions
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10, top: 30),
+                      child: Text('Suas Sessões', style: TextStyle(fontSize: 30)),
+                    ),
+                    //lista Personas
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 240,     
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: listSessoes.length,
+                        shrinkWrap: true,                      
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: Skeleton(
+                              isLoading: _loading,
+                              skeleton: SessoesCard.getSkeleton(getWhatSize(context)),
+                              child: listSessoes[index],
+                            ),
+                          );                          
+                        }
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
-        );
+          ),
+        ),
+      ],
+    );
+  }
+  
+}
+
+class PersonaCard extends StatelessWidget {
+  const PersonaCard({Key? key}) : super(key: key);
+
+  static getSkeleton(Orientation orientation){
+    return Container(
+      height: orientation == Orientation.portrait ? 240 : 360,
+      width: orientation == Orientation.portrait ? 180 : 260,
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(10)
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: getWhatSize(context) == Orientation.portrait ? 240 : 360,
+      width: getWhatSize(context)  == Orientation.portrait ? 180 : 260,
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(10)
+      ),
+    );
+  }
+}
+
+class SessoesCard extends StatelessWidget {
+  const SessoesCard({Key? key}) : super(key: key);
+
+  static getSkeleton(Orientation orientation){
+    return Container(
+      height: orientation == Orientation.portrait ? 240 : 360,
+      width: orientation == Orientation.portrait ? 300 : 460,
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(10)
+      ),
+    );
+  }
+
+ 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: getWhatSize(context) == Orientation.portrait ? 240 : 360,
+      width: getWhatSize(context)  == Orientation.portrait ? 300 : 460,
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(10)
+      ),
+    );
   }
 }
