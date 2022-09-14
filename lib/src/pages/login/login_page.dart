@@ -74,6 +74,11 @@ class _LoginPageState extends AuthState<LoginPage> {
   }
 
   @override
+  void onAuthenticated(Session session) {
+    super.onAuthenticated(session);
+  }
+
+  @override
   void dispose() {
     super.dispose();
   }
@@ -95,7 +100,7 @@ class _LoginPageState extends AuthState<LoginPage> {
 
   Widget getContentBasedInSize(){
     
-    if(getWhatSize(context) == Orientation.landscape){
+    if(isLandscape(context)){
       return Row(          
           children: [
             Container(

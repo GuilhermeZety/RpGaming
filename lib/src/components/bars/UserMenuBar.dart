@@ -1,20 +1,53 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:rpgaming/src/Cache.dart';
+import 'package:rpgaming/src/models/UserInfo.dart';
+import 'package:rpgaming/src/pages/profile/profile-page.dart';
+import '../../Util/NetworkInfo.dart';
 import '../../Util/constants.dart';
 import '../Logo.dart';
 
 import '../../Util/navigate.dart';
-import '../../models/UserInfo.dart';
 import '../../pages/notification/notification-page.dart';
 
-class UserMenuBar extends StatelessWidget {
-  const UserMenuBar({Key? key, this.userInfo}) : super(key: key);
+class UserMenuBar extends StatefulWidget {
+  const UserMenuBar({Key? key}) : super(key: key);
 
-  final UserInfo? userInfo;
-  
+  @override
+  State<UserMenuBar> createState() => _UserMenuBarState();
+}
+
+class _UserMenuBarState extends State<UserMenuBar> {  
+
+  UserInfo? userInfo;
+  @override
+  initState(){
+    super.initState();
+
+    Timer.run(() => updateUser());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  updateUser() async {
+    if(await hasInternetConnection()){
+      var currentProfile = await Cache().getUserInfo();
+      
+      if(currentProfile != null){
+        setState(() {
+          userInfo = currentProfile;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Orientation orientation = getWhatSize(context);
-
     return Center(
       child: Container(
         padding: EdgeInsets.all(10),
@@ -65,7 +98,7 @@ class UserMenuBar extends StatelessWidget {
                 MouseRegion(
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
-                    onTap: () async => {},
+                    onTap: () async => to(context, ProfilePage()),
                     child: CircleAvatar(
                       radius: 40,                   
                       child: 

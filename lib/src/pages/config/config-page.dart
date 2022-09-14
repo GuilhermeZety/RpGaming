@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:rpgaming/src/components/Button.dart';
 import '../../Util/constants.dart';
+import '../../api/auth_required_state.dart';
 import '../../app_widget.dart';
 import '../../components/bars/BottomMenuBar.dart';
 
@@ -12,6 +13,7 @@ import '../../components/check-box.dart';
 
 
 class ConfigPage extends StatefulWidget{
+  static const String route = '/config';
   ConfigPage({Key? key}) : super(key: key);
 
   @override
@@ -26,7 +28,7 @@ List<Color> colors = [
   Color(0xFFC3C33C)
 ];
 
-class _ConfigPageState extends State<ConfigPage> {
+class _ConfigPageState extends AuthRequiredState<ConfigPage> {
 
   bool isPersonalized() {
     bool value = true;
@@ -42,13 +44,13 @@ class _ConfigPageState extends State<ConfigPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getWhatSize(context) == Orientation.portrait ? TopMenuBar(height: 100, name: 'Configurações') : null,
+      appBar: isPortrait(context) ? TopMenuBar(height: 100, name: 'Configurações') : null,
       body: Container(
         color: Theme.of(context).backgroundColor,
         width: MediaQuery.of(context).size.width,
         child: getContentBasedInOrientation()
       ),
-      bottomNavigationBar: getWhatSize(context) == Orientation.portrait ? BottomMenuBar(gearIsActive: true, colorBack: Theme.of(context).backgroundColor) : null,
+      bottomNavigationBar: isPortrait(context) ? BottomMenuBar(gearIsActive: true, colorBack: Theme.of(context).backgroundColor) : null,
     );
   }
 
@@ -63,11 +65,9 @@ class _ConfigPageState extends State<ConfigPage> {
 
 
   colorPicker(){
-    // raise the [showDialog] widget
     showDialog(
       context: context,
-      builder: (a) =>
-      
+      builder: (a) =>      
       AlertDialog(
         title: const Text('Escolha uma cor!'),
 
@@ -97,7 +97,7 @@ class _ConfigPageState extends State<ConfigPage> {
 
   
   getContentBasedInOrientation(){    
-    if(getWhatSize(context) == Orientation.landscape){ 
+    if(isLandscape(context)){ 
       return Row(
         children: [
           Navbar(gearIsActive: true),
@@ -273,23 +273,6 @@ class _ConfigPageState extends State<ConfigPage> {
                   Center(
                     child: Text('Em desenvolvimento!'),
                   )
-                  // Container(
-                  //   child: ListView(
-                  //     children: [
-                  //       SizedBox(height: 10),
-                  //       SeletableCheckboxCard(
-                  //         color: colors[0], 
-                  //         name: 'Portugues',
-                  //         onClick: () => AppWidget.setTheme(context, colors[0]),
-                  //       ),
-                  //       SeletableCheckboxCard(
-                  //         color: colors[1] , 
-                  //         name: 'English',
-                  //         onClick: () => AppWidget.setTheme(context, colors[1]),
-                  //       ),
-                  //     ],
-                  //   )
-                  // ),
                 ]
               ),
             )
@@ -298,7 +281,6 @@ class _ConfigPageState extends State<ConfigPage> {
       )
     );
   }
-
 }
 
 class SeletableCheckboxCard extends StatelessWidget {
@@ -330,7 +312,7 @@ class SeletableCheckboxCard extends StatelessWidget {
                 margin: EdgeInsets.symmetric(vertical: 4),
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
-                  color: getWhatSize(context) == Orientation.portrait ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).backgroundColor,
+                  color: isPortrait(context) ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).backgroundColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(

@@ -8,3 +8,11 @@ final supabaseInstanse = Supabase.instance;
 Orientation getWhatSize(BuildContext c){
   return MediaQuery.of(c).orientation;
 }
+
+isPortrait(BuildContext c){
+  return MediaQuery.of(c).orientation == Orientation.portrait;
+}
+
+isLandscape(BuildContext c){
+  return MediaQuery.of(c).orientation == Orientation.landscape;
+}

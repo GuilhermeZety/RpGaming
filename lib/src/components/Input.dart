@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Input extends StatefulWidget {
-  const Input({Key? key, 
+  const Input({
+    Key? key, 
     this.controller,
     required this.type,
     required this.label,
@@ -17,7 +18,8 @@ class Input extends StatefulWidget {
     this.minimumAcceptableDate,
     this.onchange,
     this.big = false,
-
+    this.backgroundColor,
+    this.height = 83
   }) : super(key: key);
   
   final TextEditingController? controller;
@@ -31,6 +33,8 @@ class Input extends StatefulWidget {
   final void Function()? onTap;
   final DateTime? minimumAcceptableDate;
   final void Function()? onchange;
+  final Color? backgroundColor;
+  final double height;
 
   @override
   State<Input> createState() => _InputState();
@@ -112,7 +116,8 @@ class _InputState extends State<Input> {
     }
 
     return Container(
-      height: 83,
+      height: widget.height,
+      color: widget.backgroundColor,
       child: TextFormField(
         controller: widget.controller,
         initialValue: widget.initialText,

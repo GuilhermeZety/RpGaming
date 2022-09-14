@@ -9,7 +9,10 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rpgaming/src/pages/notification/notification-page.dart';
+import 'package:rpgaming/src/pages/profile/profile-page.dart';
 import 'Cache.dart';
 import 'styles/CustomTheme.dart';
 
@@ -27,6 +30,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 var themeData = CustomTheme().theme;
 
 Color _primary = themeData.primaryColor;
+FToast fToast = FToast();
 
 class AppWidget extends StatefulWidget {
   const AppWidget({Key? key}) : super(key: key);
@@ -50,6 +54,7 @@ class _AppWidgetState extends State<AppWidget> {
   @override
   void initState() {
     super.initState();
+    fToast.init(context);
     Timer.run(() => onLoaded());
   }
   
@@ -61,7 +66,6 @@ class _AppWidgetState extends State<AppWidget> {
         _primary = color;
       });
     }
-
   }
 
   @override
@@ -72,8 +76,22 @@ class _AppWidgetState extends State<AppWidget> {
       navigatorKey: navigatorKey,
       // theme: customTheme.theme,
       theme: themeData.copyWith(
-        primaryColor: _primary
-      ),
+        primaryColor: _primary,
+        colorScheme: ColorScheme.dark(
+          primary: _primary,
+          secondary: _primary.withOpacity(0.8)
+        )
+      ),      
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('pt'),
+        Locale('en'),
+      ],
+      locale: Locale('pt'),
       routes: <String, WidgetBuilder>{
         '/': (BuildContext context) => const LoadPage(),
         '/login': (BuildContext context) => const LoginPage(),
@@ -84,6 +102,7 @@ class _AppWidgetState extends State<AppWidget> {
         '/report-error': (BuildContext context) => const ReportErrorPage(error: 'null',),
         '/home': (BuildContext context) => const HomePage(),
         '/notifications': (BuildContext context) => const NotificationPage(),
+        '/profile': (BuildContext context) => const ProfilePage(),
       },
       initialRoute: '/',
     );

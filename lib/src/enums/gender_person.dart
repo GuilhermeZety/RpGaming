@@ -30,3 +30,15 @@ GenderPerson fromMapEnumGenderPerson(String genderPerson){
     return GenderPerson.other;
   }
 }
+
+getGenderValue(GenderPerson gender, controller){
+    if(gender == GenderPerson.male){
+      return 'Masculino';
+    }
+    else if(gender == GenderPerson.female){
+      return 'Feminino';
+    }
+    else if(gender == GenderPerson.other){
+      return controller.text;
+    }
+  }

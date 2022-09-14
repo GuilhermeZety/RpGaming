@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:skeletons/skeletons.dart';
-import '../../Util/toasts.dart';
 import '../../components/bars/BottomMenuBar.dart';
 import '../../Util/NetworkInfo.dart';
 import '../../components/bars/navbar/Navbar.dart';
@@ -31,8 +30,7 @@ class _HomePageState extends AuthRequiredState<HomePage> {
   bool hasInternet = false;
   
   FToast fToast = FToast();
-
-
+  
   List<Widget> listPersonas = [
     PersonaCard(),
     PersonaCard(),
@@ -58,56 +56,6 @@ class _HomePageState extends AuthRequiredState<HomePage> {
   }
 
   
-
-  @override
-  void onAuthenticated(Session session) async {
-    try{
-      if(session.user != null){
-        if(userInfo == null){
-          var a = await _getProfile(session.user!.id);
-          if(a != null){
-            var profile = UserInfo.fromMap(a);
-
-
-            setState(() {
-              sessionUser = session.user!;
-              userInfo = profile;
-            });
-          }
-        }
-      }
-      else{
-        onUnauthenticated();
-      }
-      // setState(() {
-      //   _loading = false;      
-      // });
-    }
-    catch(err){
-      showWarningToast(fToast: fToast, message: err.toString());
-      
-      // setState(() {
-      //   _loading = false;      
-      // });
-    }    
-  }
-
-  _getProfile(String id) async {
-    final response = await supabase
-        .from('user')
-        .select()
-        .eq('id', id)
-        .single()
-        .execute();
-        
-    if (response.error != null) {
-      showWarningToast(fToast: fToast, message: response.error!.message);
-      return null;
-    }
-
-    return response.data;
-  }
-
   @override
   void dispose() {
     super.dispose();
@@ -120,13 +68,13 @@ class _HomePageState extends AuthRequiredState<HomePage> {
       body: SafeArea(        
         child: getContentBasedInOrientation()
       ),
-      bottomNavigationBar: getWhatSize(context) == Orientation.portrait ? BottomMenuBar(homeIsActive: true, colorBack: Theme.of(context).backgroundColor) : null,
+      bottomNavigationBar: isPortrait(context) ? BottomMenuBar(homeIsActive: true, colorBack: Theme.of(context).backgroundColor) : null,
     );
   }
 
   getContentBasedInOrientation(){
     
-    if(getWhatSize(context) == Orientation.landscape){
+    if(isLandscape(context)){
       return Row(
         children: [
           Navbar(homeIsActive: true),
@@ -138,7 +86,7 @@ class _HomePageState extends AuthRequiredState<HomePage> {
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               children: [
-                  UserMenuBar(userInfo: userInfo),
+                  UserMenuBar(),
                   //title Personas
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10),
@@ -200,7 +148,7 @@ class _HomePageState extends AuthRequiredState<HomePage> {
     return Column(
       children: [        
         //topMenu      
-        UserMenuBar(userInfo: userInfo),            
+        UserMenuBar(),            
         Expanded(
           child: Container(
             width: MediaQuery.of(context).size.width,
@@ -250,6 +198,7 @@ class _HomePageState extends AuthRequiredState<HomePage> {
                       padding: const EdgeInsets.only(bottom: 10, top: 30),
                       child: Text('Suas Sessões', style: TextStyle(fontSize: 30)),
                     ),
+                    ElevatedButton(onPressed: () => supabase.auth.signOut(), child: Text('sair')),
                     //lista Personas
                     Container(
                       width: MediaQuery.of(context).size.width,
@@ -288,7 +237,7 @@ class PersonaCard extends StatelessWidget {
   static getSkeleton(Orientation orientation){
     return Container(
       height: orientation == Orientation.portrait ? 240 : 360,
-      width: orientation == Orientation.portrait ? 180 : 260,
+      width: orientation == Orientation.portrait ? 200 : 260,
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(10)
@@ -299,8 +248,8 @@ class PersonaCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: getWhatSize(context) == Orientation.portrait ? 240 : 360,
-      width: getWhatSize(context)  == Orientation.portrait ? 180 : 260,
+      height: isPortrait(context) ? 240 : 360,
+      width: isPortrait(context) ? 200 : 260,
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(10)
@@ -327,8 +276,8 @@ class SessoesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: getWhatSize(context) == Orientation.portrait ? 240 : 360,
-      width: getWhatSize(context)  == Orientation.portrait ? 300 : 460,
+      height: isPortrait(context) ? 240 : 360,
+      width: isPortrait(context) ? 300 : 460,
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(10)

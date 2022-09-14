@@ -8,3 +8,7 @@ formatToTimeStamp(DateTime time){
 MaterialStateProperty<Color?> createMaterialStateProperty(Color color){
   return MaterialStateProperty.all<Color?>(color);
 }
+
+formatDateToddMMyyyy(DateTime date){
+  return DateFormat('dd/MM/yyyy').format(date);
+}

@@ -23,11 +23,12 @@ class _LoadPageState extends AuthState<LoadPage> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 5), () {
-      recoverSupabaseSession();
+    Timer(Duration(milliseconds: 100), () {
+    // Timer(Duration(seconds: 5), () {
       // if(resetingPassword == false){
       //   Timer(const Duration(seconds: 10), () => recoverSupabaseSession());
       // };
+      recoverSupabaseSession();
     });
     
     Timer.run(() => controller.load());

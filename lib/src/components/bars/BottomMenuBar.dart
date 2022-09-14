@@ -5,6 +5,7 @@ import '../../Util/navigate.dart';
 import '../../pages/config/config-page.dart';
 import '../../pages/home/home_page.dart';
 import '../../pages/notification/notification-page.dart';
+import '../../pages/profile/profile-page.dart';
 
 class BottomMenuBar extends StatelessWidget {
   const BottomMenuBar({Key? key, 
@@ -80,7 +81,7 @@ class BottomMenuBar extends StatelessWidget {
                     
                     //buttom user
                     GestureDetector(
-                      // onTap: !userIsActive ? () => to(context, HomePage()) : null,
+                      onTap: !userIsActive ? () => to(context, ProfilePage()) : null,
                       child: Container(
                         decoration: BoxDecoration(
                           color: userIsActive ? Theme.of(context).primaryColor.withOpacity(0.2) : null,

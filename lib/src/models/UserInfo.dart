@@ -4,20 +4,22 @@ import 'dart:convert';
 import 'package:rpgaming/src/enums/gender_person.dart';
 
 class UserInfo {
-  final String id;
+  String id;
+  String account_id;
   final DateTime created_at;
-  final String? name;
-  final String? last_name;
-  final String? nickname;
-  final DateTime? birthday;
-  final GenderPerson? gender;
-  final String? gender_value;
-  final String? avatar_url;
-  final String? name_provider;
-  final DateTime updated_at;
+  String? name;
+  String? last_name;
+  String? nickname;
+  DateTime? birthday;
+  GenderPerson? gender;
+  String? gender_value;
+  String? avatar_url;
+  String? name_provider;
+  DateTime updated_at;
 
   UserInfo({
     required this.id,
+    required this.account_id,
     required this.created_at,
     required this.updated_at,
     this.name,
@@ -46,6 +48,7 @@ class UserInfo {
   }) {
     return UserInfo(
       id: id ?? this.id,
+      account_id: account_id,
       created_at: created_at ?? this.created_at,
       name: name ?? this.name,
       last_name: last_name ?? this.last_name,
@@ -62,6 +65,7 @@ class UserInfo {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
+      'account_id': account_id,
       'created_at': created_at.toIso8601String(),
       'name': name,
       'last_name': last_name,
@@ -78,6 +82,7 @@ class UserInfo {
   factory UserInfo.fromMap(map) {
     return UserInfo(
       id: map['id'] as String,
+      account_id: map['account_id'] as String,
       created_at: DateTime.parse(map['created_at']),
       updated_at: DateTime.parse(map['updated_at']),
       name: map['name'] != null ? map['name'] as String : null,
@@ -97,7 +102,7 @@ class UserInfo {
 
   @override
   String toString() {
-    return 'UserInfo(id: $id, created_at: $created_at, name: $name, last_name: $last_name, nickname: $nickname, birthday: $birthday, birthday: $updated_at, gender: $gender, gender_value: $gender_value, avatar_url: $avatar_url, nameProvider: $name_provider)';
+    return 'UserInfo(id: $id, id: $account_id, created_at: $created_at, name: $name, last_name: $last_name, nickname: $nickname, birthday: $birthday, birthday: $updated_at, gender: $gender, gender_value: $gender_value, avatar_url: $avatar_url, nameProvider: $name_provider)';
   }
 
   @override
@@ -106,6 +111,7 @@ class UserInfo {
   
     return 
       other.id == id &&
+      other.account_id == account_id &&
       other.created_at == created_at &&
       other.name == name &&
       other.last_name == last_name &&
@@ -121,6 +127,7 @@ class UserInfo {
   @override
   int get hashCode {
     return id.hashCode ^
+      account_id.hashCode ^
       created_at.hashCode ^
       name.hashCode ^
       last_name.hashCode ^

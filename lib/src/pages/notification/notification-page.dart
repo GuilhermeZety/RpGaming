@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skeletons/skeletons.dart';
 import '../../Util/constants.dart';
+import '../../api/auth_required_state.dart';
 import '../../components/bars/BottomMenuBar.dart';
 
 import '../../components/bars/TopMenuBar.dart';
@@ -16,7 +17,7 @@ class NotificationPage extends StatefulWidget{
   State<NotificationPage> createState() => _NotificationPageState();  
 }
 
-class _NotificationPageState extends State<NotificationPage> {
+class _NotificationPageState extends AuthRequiredState<NotificationPage> {
 
   List<Widget> listNotifications = [
     NotificationCard(),
@@ -42,20 +43,20 @@ class _NotificationPageState extends State<NotificationPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: getWhatSize(context) == Orientation.portrait ? TopMenuBar(height: 100, name: 'Notificações') : null,
+        appBar: isPortrait(context) ? TopMenuBar(height: 100, name: 'Notificações') : null,
         body: Container(
           color: Theme.of(context).backgroundColor,
           width: MediaQuery.of(context).size.width,
           child: getContentBasedInOrientation()
         ),
-        bottomNavigationBar: getWhatSize(context) == Orientation.portrait ? BottomMenuBar(notificationIsActive: true, colorBack: Theme.of(context).backgroundColor) : null,
+        bottomNavigationBar: isPortrait(context) ? BottomMenuBar(notificationIsActive: true, colorBack: Theme.of(context).backgroundColor) : null,
       ),
     );
   }
 
 
   getContentBasedInOrientation(){    
-    if(getWhatSize(context) == Orientation.landscape){
+    if(isLandscape(context)){
       return Row(
         children: [
           Navbar(notificationIsActive: true),

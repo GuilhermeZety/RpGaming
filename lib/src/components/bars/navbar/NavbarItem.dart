@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class NavbarItem extends StatelessWidget {
+class NavbarItem extends StatefulWidget {
   const NavbarItem({
     Key? key,
     required this.icon,
@@ -16,20 +16,25 @@ class NavbarItem extends StatelessWidget {
   final bool isActive;
   final void Function()? onTap;
 
+  @override
+  State<NavbarItem> createState() => _NavbarItemState();
+}
 
-
+class _NavbarItemState extends State<NavbarItem> {
   @override
   Widget build(BuildContext context) {
+    Color colorContainer = Theme.of(context).primaryColor.withOpacity(0.15);
+
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: onTap,
+        onTap: widget.onTap,
         child: Container(
           width: double.infinity,
           height: 50,
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: isActive ? Theme.of(context).primaryColor.withOpacity(0.15) : null,
+            color: widget.isActive ?  colorContainer : null,
             borderRadius: BorderRadius.circular(10)
           ),
           child: Row(
@@ -41,19 +46,19 @@ class NavbarItem extends StatelessWidget {
                     width: 30,
                     padding: EdgeInsets.all(3),
                     decoration: BoxDecoration(
-                      color: isActive ? Theme.of(context).primaryColor.withOpacity(0.2) : null,
+                      color: widget.isActive ? Theme.of(context).primaryColor.withOpacity(0.2) : null,
                       borderRadius: BorderRadius.circular(100)
                     ),
-                    child: Icon(icon, color: isActive ? Theme.of(context).primaryColor : Theme.of(context).textTheme.headline1!.color,)
+                    child: Icon(widget.icon, color: widget.isActive ? Theme.of(context).primaryColor : Theme.of(context).textTheme.headline1!.color,)
                   ),
                   SizedBox(width: 30),
                   Container(
-                    child: Text(content, style: TextStyle(color: isActive ? Theme.of(context).primaryColor : null),)
+                    child: Text(widget.content, style: TextStyle(color: widget.isActive ? Theme.of(context).primaryColor : null),)
                   ),
                 ],
               ),
 
-              suffix ?? SizedBox(width: 10,)
+              widget.suffix ?? SizedBox(width: 10,)
             ],
           ),
         ),

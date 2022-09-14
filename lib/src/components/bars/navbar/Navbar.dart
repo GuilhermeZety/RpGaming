@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rpgaming/src/pages/config/config-page.dart';
+import 'package:rpgaming/src/pages/profile/profile-page.dart';
 import '../../../Util/constants.dart';
 import '../../DividerWithWidget.dart';
 import '../../Logo.dart';
@@ -70,7 +71,7 @@ class _NavbarState extends State<Navbar> {
                 content: 'Usuário',
                 icon: FontAwesomeIcons.solidUser,
                 isActive: widget.userIsActive,
-                // onTap: !widget.userIsActive ? () => to(context, NotificationPage()) : null,
+                onTap: !widget.userIsActive ? () => to(context, ProfilePage()) : null,
               ),
             ],
           ),
@@ -89,7 +90,7 @@ class _NavbarState extends State<Navbar> {
               NavbarItem(
                 content: 'Sair',
                 icon: Icons.logout,
-                isActive: widget.userIsActive,
+                isActive: false,
                 onTap: () => loggout(),
               ),
               

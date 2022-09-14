@@ -164,8 +164,9 @@ class _ContinueCreateAccountPageState extends State<ContinueCreateAccountPage> {
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.end,
                                             children: [
-                                              SizedBox(
-                                                height: 60,
+                                              Container(
+                                                height: 70,
+                                                padding: EdgeInsets.only(bottom: 14),
                                                 child: DropdownButton<GenderPerson>(
                                                   itemHeight: 50,
                                                   dropdownColor: const Color(0xFF2F2F3C),

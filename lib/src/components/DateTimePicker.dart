@@ -18,13 +18,10 @@ class InputDateTime extends StatefulWidget {
 
 class _InputDateTimeState extends State<InputDateTime> {
   DateTime date = DateTime.now();
-
   
   @override
   void initState() {
     super.initState();
-
-    Timer.run(() => widget.dateController.text = DateFormat('dd/MM/yyyy').format(date));
   }
 
   @override
@@ -34,24 +31,29 @@ class _InputDateTimeState extends State<InputDateTime> {
       type: TextInputType.datetime, 
       label: Text(widget.label),
       hintText: '', 
-      onTap: () => pickDate(context), 
+      onTap: () => pickDate(context, DateFormat('dd/MM/yyyy').parse(widget.dateController.text)), 
       minimumAcceptableDate: DateTime(DateTime.now().year - 5, DateTime.now().month, DateTime.now().day),
     );
     
   }
 
-  Future pickDate(BuildContext context) async {
-    final initialDate = DateTime.now();
+  Future pickDate(BuildContext context, initialDate) async {
+    if(initialDate == null) {
+      initialDate = DateTime.now();
+    }
+
     final newDate = await showDatePicker(
+      locale: Locale('pt'),
       context: context, 
       initialDate: initialDate, 
       firstDate: DateTime(DateTime.now().year - 100), 
-      lastDate: DateTime.now()
+      lastDate: DateTime.now(),
     );
 
     setState(() {
-      date = newDate ?? date;
+      date = newDate ?? initialDate;
     });
+
     setState(() {      
       widget.dateController.text = DateFormat('dd/MM/yyyy').format(date);
     });

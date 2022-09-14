@@ -71,7 +71,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
 
   getContentBasedInSize(){
 
-    if(getWhatSize(context) == Orientation.landscape){
+    if(isLandscape(context)){
       return Row(          
         children: [
           Container(

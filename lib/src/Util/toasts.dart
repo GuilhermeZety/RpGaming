@@ -89,7 +89,7 @@ showWarningToast({required String message, required FToast fToast, Duration? dur
   showToast(
     fToast: fToast, 
     title: 'Aviso!', 
-    duration: duration ?? Duration(seconds: 40),
+    duration: duration ?? Duration(seconds: 4),
     message: Expanded(child: Text(message, style: TextStyle(color: Colors.grey.shade800))),
     backgroundColor: Color(0xFFfef8eb), 
     color: Color(0xFFffcc14), 
