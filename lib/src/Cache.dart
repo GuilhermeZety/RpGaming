@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'models/UserInfo.dart';
+import 'models/user-info.dart';
 
 class Cache {
   static final String primaryColor = 'primaryColor';

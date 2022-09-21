@@ -1,15 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:rpgaming/src/Cache.dart';
-import 'package:rpgaming/src/models/UserInfo.dart';
-import 'package:rpgaming/src/pages/profile/profile-page.dart';
+
+import '../../Cache.dart';
 import '../../Util/NetworkInfo.dart';
 import '../../Util/constants.dart';
-import '../Logo.dart';
-
 import '../../Util/navigate.dart';
+import '../../models/user-info.dart';
 import '../../pages/notification/notification-page.dart';
+import '../../pages/profile/profile-page.dart';
+import '../logo.dart';
 
 class UserMenuBar extends StatefulWidget {
   const UserMenuBar({Key? key}) : super(key: key);

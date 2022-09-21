@@ -54,7 +54,6 @@ dependencies:
   connectivity_plus: ^2.3.6+1
   shared_preferences: ^2.0.15
   fluttertoast: ^8.0.9
-  skeletons: ^0.0.3
   flutter_colorpicker: ^1.0.3
 
 dev_dependencies:

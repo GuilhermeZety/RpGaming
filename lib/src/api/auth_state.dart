@@ -8,10 +8,10 @@ import '../Util/constants.dart';
 import '../Util/generator.dart';
 import '../Util/navigate.dart';
 import '../Util/toasts.dart';
-import '../models/UserInfo.dart';
+import '../models/user-info.dart';
 import '../pages/forgot-password/change-password-page.dart';
 import '../pages/home/home_page.dart';
-import '../pages/login/login_page.dart';
+import '../pages/login/login-page.dart';
 
 class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
   FToast fToast = FToast();

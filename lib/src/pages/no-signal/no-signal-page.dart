@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../login/login_page.dart';
+import '../login/login-page.dart';
 
 import '../../Util/navigate.dart';
-import '../../components/Button.dart';
+import '../../components/button.dart';
 
 class NoSignalPage extends StatefulWidget {
-  NoSignalPage({Key? key}) : super(key: key);
+  const NoSignalPage({Key? key}) : super(key: key);
 
   @override
   State<NoSignalPage> createState() => _NoSignalPageState();

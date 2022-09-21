@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'src/app_widget.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'src/app_widget.dart';
 
 
 bool resetingPassword = false;

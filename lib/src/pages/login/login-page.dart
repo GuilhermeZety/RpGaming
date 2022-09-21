@@ -1,28 +1,20 @@
 // ignore_for_file: avoid_returning_null_for_void
-
-
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rpgaming/src/Util/constants.dart';
 import 'package:rpgaming/src/Util/navigate.dart';
 import 'package:rpgaming/src/api/auth_state.dart';
-import 'package:rpgaming/src/components/Button.dart';
-import 'package:rpgaming/src/components/DividerWithWidget.dart';
-import 'package:rpgaming/src/components/Input.dart';
-import 'package:rpgaming/src/components/Logo.dart';
-import 'package:rpgaming/src/pages/create-account/create_account_page.dart';
+import 'package:rpgaming/src/components/button.dart';
+import 'package:rpgaming/src/components/divider.dart';
+import 'package:rpgaming/src/components/input.dart';
+import 'package:rpgaming/src/components/logo.dart';
+import 'package:rpgaming/src/pages/create-account/create-account-page.dart';
 import 'package:rpgaming/src/pages/forgot-password/forgot-password-page.dart';
-import 'package:rpgaming/src/pages/login/login_viewmodel.dart';
+import 'package:rpgaming/src/pages/login/login-viewmodel.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-import '../../Util/toasts.dart';
-import '../../models/ResponseModel.dart';
-import '../home/home_page.dart';
-
 
 
 class LoginPage extends StatefulWidget {
@@ -35,43 +27,13 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends AuthState<LoginPage> {
   final controller = LoginViewModel();  
-  late FToast fToast;  
 
   @override
   initState() {
     super.initState();
-    fToast = FToast();
-    fToast.init(context);
-    
     Timer.run(() => controller.onLoad(context));
   }   
 
-
-  handleSignIn(Provider? provider) async {
-    ResponseModel? response = await controller.signIn(provider);
-    
-    if(response != null){
-      if(response.success){
-        showSuccessToast(
-          fToast: fToast,
-          message: response.message,
-        ); 
-        to(context, HomePage());
-      }
-      else if(response.isWarning){
-        showWarningToast(
-          fToast: fToast,
-          message: response.message,
-        ); 
-      }
-      else {
-        showErrorToast(
-          fToast: fToast,
-          error: response.message,
-        ); 
-      }
-    }
-  }
 
   @override
   void onAuthenticated(Session session) {
@@ -92,14 +54,16 @@ class _LoginPageState extends AuthState<LoginPage> {
         constraints: BoxConstraints(
           minHeight: MediaQuery.of(context).size.height
         ),
-        child: getContentBasedInSize()
+        child: Observer(
+          builder: (_) =>         
+            getContentBasedInOrientation()
+        )
       ),
     );
   }
 
 
-  Widget getContentBasedInSize(){
-    
+  Widget getContentBasedInOrientation(){    
     if(isLandscape(context)){
       return Row(          
           children: [
@@ -148,14 +112,14 @@ class _LoginPageState extends AuthState<LoginPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Input(
-                              controller: controller.emailController.value,
+                              controller: controller.emailController,
                               type: TextInputType.emailAddress,                            
                               label: const Text('Email'),
                               hintText: 'insira um email...',
                               obscure: false,
                             ),
                             Input(
-                              controller: controller.passwordController.value,
+                              controller: controller.passwordController,
                               type: TextInputType.visiblePassword,    
                               label: const Text('Senha'),
                               hintText: 'insira uma senha...',
@@ -175,7 +139,7 @@ class _LoginPageState extends AuthState<LoginPage> {
                             const SizedBox(height: 20),
                             Button(
                               onPress: () async {
-                                await handleSignIn(null);
+                                await controller.handleSignIn(context, null);
                               },
                               text: 'Entrar', 
                               size: Size(MediaQuery.of(context).size.width, 70),
@@ -193,28 +157,28 @@ class _LoginPageState extends AuthState<LoginPage> {
                                   icon: SvgPicture.asset('assets/images/svg/google.svg',
                                     semanticsLabel: 'Label'
                                   ),
-                                  onPressed: () => handleSignIn(Provider.google),
+                                  onPressed: () => controller.handleSignIn(context, Provider.google),
                                 ),
                                 IconButton(
                                   iconSize: 37,
                                   icon: SvgPicture.asset('assets/images/svg/facebook.svg',
                                     semanticsLabel: 'Label'
                                   ),
-                                  onPressed: () => handleSignIn(Provider.facebook),
+                                  onPressed: () => controller.handleSignIn(context, Provider.facebook),
                                 ),
                                 IconButton(
                                   iconSize: 31,
                                   icon: SvgPicture.asset('assets/images/svg/discord.svg',
                                     semanticsLabel: 'Label'
                                   ),
-                                  onPressed: () => handleSignIn(Provider.discord),
+                                  onPressed: () => controller.handleSignIn(context, Provider.discord),
                                 ),
                                 IconButton(
                                   iconSize: 31,
                                   icon: SvgPicture.asset('assets/images/svg/twitch.svg',
                                     semanticsLabel: 'Label'
                                   ),
-                                  onPressed: () => handleSignIn(Provider.twitch),
+                                  onPressed: () => controller.handleSignIn(context, Provider.twitch),
                                 ),
                               ],
                             ),
@@ -277,14 +241,14 @@ class _LoginPageState extends AuthState<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Input(
-                    controller: controller.emailController.value,
+                    controller: controller.emailController,
                     type: TextInputType.emailAddress,                            
                     label: const Text('Email'),
                     hintText: 'insira um email...',
                     obscure: false,
                   ),
                   Input(
-                    controller: controller.passwordController.value,
+                    controller: controller.passwordController,
                     type: TextInputType.visiblePassword,    
                     label: const Text('Senha'),
                     hintText: 'insira uma senha...',
@@ -301,7 +265,7 @@ class _LoginPageState extends AuthState<LoginPage> {
                   const SizedBox(height: 9),
                   Button(
                     onPress: () async {
-                      await handleSignIn(null);
+                      await controller.handleSignIn(context, null);
                     },
                     text: 'Entrar', 
                     size: Size(MediaQuery.of(context).size.width, 70),
@@ -318,28 +282,28 @@ class _LoginPageState extends AuthState<LoginPage> {
                         icon: SvgPicture.asset('assets/images/svg/google.svg',
                           semanticsLabel: 'Label'
                         ),
-                        onPressed: () => handleSignIn(Provider.google),
+                        onPressed: () => controller.handleSignIn(context, Provider.google),
                       ),
                       IconButton(
                         iconSize: 37,
                         icon: SvgPicture.asset('assets/images/svg/facebook.svg',
                           semanticsLabel: 'Label'
                         ),
-                        onPressed: () => handleSignIn(Provider.facebook),
+                        onPressed: () => controller.handleSignIn(context, Provider.facebook),
                       ),
                       IconButton(
                         iconSize: 31,
                         icon: SvgPicture.asset('assets/images/svg/discord.svg',
                           semanticsLabel: 'Label'
                         ),
-                        onPressed: () => handleSignIn(Provider.discord),
+                        onPressed: () => controller.handleSignIn(context, Provider.discord),
                       ),
                       IconButton(
                         iconSize: 31,
                         icon: SvgPicture.asset('assets/images/svg/twitch.svg',
                           semanticsLabel: 'Label'
                         ),
-                        onPressed: () => handleSignIn(Provider.twitch),
+                        onPressed: () => controller.handleSignIn(context, Provider.twitch),
                       ),
                     ],
                   ),
@@ -360,7 +324,7 @@ class _LoginPageState extends AuthState<LoginPage> {
               ),
             ),
           ),
-        ),                
+        ),
       ]
     );
   }

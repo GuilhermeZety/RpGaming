@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:rpgaming/src/pages/config/config-page.dart';
-import 'package:rpgaming/src/pages/profile/profile-page.dart';
-import '../../../Util/constants.dart';
-import '../../DividerWithWidget.dart';
-import '../../Logo.dart';
 
+import '../../../Util/constants.dart';
 import '../../../Util/navigate.dart';
+import '../../../pages/config/configs-page.dart';
 import '../../../pages/home/home_page.dart';
 import '../../../pages/notification/notification-page.dart';
-import 'NavbarItem.dart';
+import '../../../pages/profile/profile-page.dart';
+import '../../divider.dart';
+import '../../logo.dart';
+import 'navbar-item.dart';
 
 
 class Navbar extends StatefulWidget {
@@ -85,7 +85,7 @@ class _NavbarState extends State<Navbar> {
                 content: 'Configurações',
                 icon: FontAwesomeIcons.gear,
                 isActive: widget.gearIsActive,
-                onTap: !widget.gearIsActive ? () => to(context, ConfigPage()) : null,
+                onTap: !widget.gearIsActive ? () => to(context, ConfigsPage()) : null,
               ),
               NavbarItem(
                 content: 'Sair',

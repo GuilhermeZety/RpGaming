@@ -1,19 +1,34 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../../Util/NetworkInfo.dart';
-import '../../Util/navigate.dart';
-import '../../models/ResponseModel.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mobx/mobx.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../Util/NetworkInfo.dart';
 import '../../Util/constants.dart';
+import '../../Util/navigate.dart';
+import '../../Util/toasts.dart';
+import '../../models/response-model.dart';
+import '../home/home_page.dart';
 import '../no-signal/no-signal-page.dart';
 
-class LoginViewModel extends ChangeNotifier {
+part 'login-viewmodel.g.dart';
+
+class LoginViewModel = _LoginViewModel with _$LoginViewModel;
+
+abstract class _LoginViewModel with Store {
   final formKey = GlobalKey<FormState>();
 
-  var emailController = ValueNotifier<TextEditingController>(TextEditingController());
-  var passwordController = ValueNotifier<TextEditingController>(TextEditingController());
+  @observable
+  TextEditingController emailController = TextEditingController();
+  @action 
+  void setEmailControllerText(String _) => emailController.text = _;
+
+  @observable
+  TextEditingController passwordController = TextEditingController();
+  @action 
+  void setPasswordControllerText(String _) => passwordController.text = _;
 
   onLoad(context) async {
     if(!await hasInternetConnection()){
@@ -21,6 +36,31 @@ class LoginViewModel extends ChangeNotifier {
     }
   }
 
+  handleSignIn(BuildContext context, Provider? provider) async {
+    ResponseModel? response = await signIn(provider);
+    
+    if(response != null){
+      if(response.success){
+        showSuccessToast(
+          fToast: FToast().init(context),
+          message: response.message,
+        ); 
+        to(context, HomePage());
+      }
+      else if(response.isWarning){
+        showWarningToast(
+          fToast: FToast().init(context),
+          message: response.message,
+        ); 
+      }
+      else {
+        showErrorToast(
+          fToast: FToast().init(context),
+          error: response.message,
+        ); 
+      }
+    }
+  }
 
   Future<ResponseModel?> signIn(Provider? provider) async {
     if (provider == null) {
@@ -69,6 +109,7 @@ class LoginViewModel extends ChangeNotifier {
     }    
     else{
       try{
+        // var redirect =  kIsWeb ? 'https://guilhermezety.github.io/' : 'io.supabase.flutterquickstart://login-callback/';
         var redirect =  kIsWeb ? 'http://localhost:5000/' : 'io.supabase.flutterquickstart://login-callback/';
         final res = await supabase.auth.signInWithProvider(
           provider,        

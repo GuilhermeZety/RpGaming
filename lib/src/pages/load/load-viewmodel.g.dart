@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'load_viewmodel.dart';
+part of 'load-viewmodel.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,9 +8,8 @@ part of 'load_viewmodel.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$LoadViewModel on _LoadViewModelBase, Store {
-  late final _$initAtom =
-      Atom(name: '_LoadViewModelBase.init', context: context);
+mixin _$LoadViewModel on _LoadViewModel, Store {
+  late final _$initAtom = Atom(name: '_LoadViewModel.init', context: context);
 
   @override
   bool get init {
@@ -26,7 +25,7 @@ mixin _$LoadViewModel on _LoadViewModelBase, Store {
   }
 
   late final _$showLogoAtom =
-      Atom(name: '_LoadViewModelBase.showLogo', context: context);
+      Atom(name: '_LoadViewModel.showLogo', context: context);
 
   @override
   bool get showLogo {
@@ -42,7 +41,7 @@ mixin _$LoadViewModel on _LoadViewModelBase, Store {
   }
 
   late final _$positionAtom =
-      Atom(name: '_LoadViewModelBase.position', context: context);
+      Atom(name: '_LoadViewModel.position', context: context);
 
   @override
   double get position {
@@ -58,7 +57,7 @@ mixin _$LoadViewModel on _LoadViewModelBase, Store {
   }
 
   late final _$durationAnimateWaveAtom =
-      Atom(name: '_LoadViewModelBase.durationAnimateWave', context: context);
+      Atom(name: '_LoadViewModel.durationAnimateWave', context: context);
 
   @override
   int get durationAnimateWave {
@@ -74,7 +73,7 @@ mixin _$LoadViewModel on _LoadViewModelBase, Store {
   }
 
   late final _$anguloAtom =
-      Atom(name: '_LoadViewModelBase.angulo', context: context);
+      Atom(name: '_LoadViewModel.angulo', context: context);
 
   @override
   double get angulo {
@@ -89,61 +88,61 @@ mixin _$LoadViewModel on _LoadViewModelBase, Store {
     });
   }
 
-  late final _$_LoadViewModelBaseActionController =
-      ActionController(name: '_LoadViewModelBase', context: context);
+  late final _$_LoadViewModelActionController =
+      ActionController(name: '_LoadViewModel', context: context);
 
   @override
   void setInit(bool _) {
-    final _$actionInfo = _$_LoadViewModelBaseActionController.startAction(
-        name: '_LoadViewModelBase.setInit');
+    final _$actionInfo = _$_LoadViewModelActionController.startAction(
+        name: '_LoadViewModel.setInit');
     try {
       return super.setInit(_);
     } finally {
-      _$_LoadViewModelBaseActionController.endAction(_$actionInfo);
+      _$_LoadViewModelActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setShowLogo(bool _) {
-    final _$actionInfo = _$_LoadViewModelBaseActionController.startAction(
-        name: '_LoadViewModelBase.setShowLogo');
+    final _$actionInfo = _$_LoadViewModelActionController.startAction(
+        name: '_LoadViewModel.setShowLogo');
     try {
       return super.setShowLogo(_);
     } finally {
-      _$_LoadViewModelBaseActionController.endAction(_$actionInfo);
+      _$_LoadViewModelActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setPosition(double _) {
-    final _$actionInfo = _$_LoadViewModelBaseActionController.startAction(
-        name: '_LoadViewModelBase.setPosition');
+    final _$actionInfo = _$_LoadViewModelActionController.startAction(
+        name: '_LoadViewModel.setPosition');
     try {
       return super.setPosition(_);
     } finally {
-      _$_LoadViewModelBaseActionController.endAction(_$actionInfo);
+      _$_LoadViewModelActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setDurationAnimateWave(int _) {
-    final _$actionInfo = _$_LoadViewModelBaseActionController.startAction(
-        name: '_LoadViewModelBase.setDurationAnimateWave');
+    final _$actionInfo = _$_LoadViewModelActionController.startAction(
+        name: '_LoadViewModel.setDurationAnimateWave');
     try {
       return super.setDurationAnimateWave(_);
     } finally {
-      _$_LoadViewModelBaseActionController.endAction(_$actionInfo);
+      _$_LoadViewModelActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setAngulo(double _) {
-    final _$actionInfo = _$_LoadViewModelBaseActionController.startAction(
-        name: '_LoadViewModelBase.setAngulo');
+    final _$actionInfo = _$_LoadViewModelActionController.startAction(
+        name: '_LoadViewModel.setAngulo');
     try {
       return super.setAngulo(_);
     } finally {
-      _$_LoadViewModelBaseActionController.endAction(_$actionInfo);
+      _$_LoadViewModelActionController.endAction(_$actionInfo);
     }
   }
 

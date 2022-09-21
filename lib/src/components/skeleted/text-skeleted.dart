@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:skeletons/skeletons.dart';
+
+import '../skeleton.dart';
 
 class TextSkeleted extends StatelessWidget {
   const TextSkeleted({Key? key, required this.isLoading, required this.sizeSkeleton, required this.child}) : super(key: key);
@@ -12,11 +13,8 @@ class TextSkeleted extends StatelessWidget {
   Widget build(BuildContext context) {
     return Skeleton(
       isLoading: isLoading,
-      skeleton: Container(
-        width: sizeSkeleton.width,
-        height: sizeSkeleton.height,
-        color: Colors.black
-      ),
+      sizeSkeleton: sizeSkeleton,
+      borderRadius: 10,
       child: Container(        
         width: sizeSkeleton.width,
         height: sizeSkeleton.height,

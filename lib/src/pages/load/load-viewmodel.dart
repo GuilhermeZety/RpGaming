@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:mobx/mobx.dart';
 
-part 'load_viewmodel.g.dart';
+part 'load-viewmodel.g.dart';
 
-class LoadViewModel = _LoadViewModelBase with _$LoadViewModel;
+class LoadViewModel = _LoadViewModel with _$LoadViewModel;
 
-abstract class _LoadViewModelBase with Store {
+abstract class _LoadViewModel with Store {
   @observable
   bool init = false;
   @action 

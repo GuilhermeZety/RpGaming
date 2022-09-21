@@ -7,10 +7,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rpgaming/src/Util/constants.dart';
 import 'package:rpgaming/src/Util/navigate.dart';
 import 'package:rpgaming/src/Util/toasts.dart';
-import 'package:rpgaming/src/components/Button.dart';
-import 'package:rpgaming/src/components/Input.dart';
-import 'package:rpgaming/src/components/Logo.dart';
-import 'package:rpgaming/src/pages/login/login_page.dart';
+import 'package:rpgaming/src/components/button.dart';
+import 'package:rpgaming/src/components/input.dart';
+import 'package:rpgaming/src/components/logo.dart';
+import 'package:rpgaming/src/pages/login/login-page.dart';
 
 class ReportErrorPage extends StatefulWidget {
   static const String route = '/report-error';

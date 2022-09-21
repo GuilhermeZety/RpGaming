@@ -16,3 +16,22 @@ isPortrait(BuildContext c){
 isLandscape(BuildContext c){
   return MediaQuery.of(c).orientation == Orientation.landscape;
 }
+
+List<Map<String, dynamic>> themePrimaryColors = [
+  {
+    'color': Color(0xFF666CDE),
+    'name': 'Lilás'
+  },
+  {
+    'color': Color(0xFF7A1AC6),
+    'name': 'Roxo'
+  },
+  {
+    'color': Color(0xFF3FD9C6),
+    'name': 'Ciano'
+  },
+  {
+    'color': Color(0xFFC3C33C),
+    'name': 'Amarelo'
+  }
+];

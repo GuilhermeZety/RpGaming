@@ -2,15 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:skeletons/skeletons.dart';
-import '../../components/bars/BottomMenuBar.dart';
-import '../../Util/NetworkInfo.dart';
-import '../../components/bars/navbar/Navbar.dart';
-import '../../components/bars/UserMenuBar.dart';
-import '../../models/UserInfo.dart';
-import '../../api/auth_required_state.dart';
-import '../../Util/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../Util/NetworkInfo.dart';
+import '../../Util/constants.dart';
+import '../../api/auth_required_state.dart';
+import '../../components/bars/bottom-menu-bar.dart';
+import '../../components/bars/navbar/navbar.dart';
+import '../../components/bars/user-menu-bar.dart';
+import '../../components/skeleton.dart';
+import '../../models/user-info.dart';
 
 class HomePage extends StatefulWidget {
   static const String route = '/home';
@@ -104,8 +105,9 @@ class _HomePageState extends AuthRequiredState<HomePage> {
                         return Padding(
                           padding: const EdgeInsets.only(right: 25),
                           child: Skeleton(
+                            borderRadius: 10,
                             isLoading: _loading,
-                            skeleton: PersonaCard.getSkeleton(getWhatSize(context)),
+                            sizeSkeleton: PersonaCard.getSkeleton(getWhatSize(context)),
                             child: listPersonas[index],
                           ),
                         );
@@ -130,8 +132,9 @@ class _HomePageState extends AuthRequiredState<HomePage> {
                         return Padding(
                           padding: const EdgeInsets.only(right: 25),
                           child: Skeleton(
+                            borderRadius: 10,
                             isLoading: _loading,
-                            skeleton: SessoesCard.getSkeleton(getWhatSize(context)),
+                            sizeSkeleton: SessoesCard.getSkeleton(getWhatSize(context)),
                             child: listSessoes[index],
                           ),
                         );                        
@@ -185,7 +188,8 @@ class _HomePageState extends AuthRequiredState<HomePage> {
                             padding: const EdgeInsets.only(right: 15),
                             child: Skeleton(
                               isLoading: _loading,
-                              skeleton: PersonaCard.getSkeleton(getWhatSize(context)),
+                              borderRadius: 10,
+                              sizeSkeleton: PersonaCard.getSkeleton(getWhatSize(context)),
                               child: listPersonas[index],
                             ),
                           );                          
@@ -212,7 +216,8 @@ class _HomePageState extends AuthRequiredState<HomePage> {
                             padding: const EdgeInsets.only(right: 15),
                             child: Skeleton(
                               isLoading: _loading,
-                              skeleton: SessoesCard.getSkeleton(getWhatSize(context)),
+                              borderRadius: 10,
+                              sizeSkeleton: SessoesCard.getSkeleton(getWhatSize(context)),
                               child: listSessoes[index],
                             ),
                           );                          
@@ -234,15 +239,17 @@ class _HomePageState extends AuthRequiredState<HomePage> {
 class PersonaCard extends StatelessWidget {
   const PersonaCard({Key? key}) : super(key: key);
 
-  static getSkeleton(Orientation orientation){
-    return Container(
-      height: orientation == Orientation.portrait ? 240 : 360,
-      width: orientation == Orientation.portrait ? 200 : 260,
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(10)
-      ),
-    );
+  static Size getSkeleton(Orientation orientation){
+    return Size(orientation == Orientation.portrait ? 200 : 260, orientation == Orientation.portrait ? 240 : 360);
+    
+    // Container(
+    //   height: ,
+    //   width: ,
+    //   decoration: BoxDecoration(
+    //     color: Colors.black,
+    //     borderRadius: BorderRadius.circular(10)
+    //   ),
+    // );
   }
 
   @override
@@ -262,14 +269,16 @@ class SessoesCard extends StatelessWidget {
   const SessoesCard({Key? key}) : super(key: key);
 
   static getSkeleton(Orientation orientation){
-    return Container(
-      height: orientation == Orientation.portrait ? 240 : 360,
-      width: orientation == Orientation.portrait ? 300 : 460,
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(10)
-      ),
-    );
+    return Size(orientation == Orientation.portrait ? 300 : 460, orientation == Orientation.portrait ? 240 : 360);
+    
+    // Container(
+    //   height: orientation == Orientation.portrait ? 240 : 360,
+    //   width: orientation == Orientation.portrait ? 300 : 460,
+    //   decoration: BoxDecoration(
+    //     color: Colors.black,
+    //     borderRadius: BorderRadius.circular(10)
+    //   ),
+    // );
   }
 
  

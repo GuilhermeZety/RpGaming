@@ -11,19 +11,22 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:rpgaming/src/pages/config/configs-page.dart';
+import 'package:rpgaming/src/pages/config/theme/theme-config-page.dart';
+import 'package:rpgaming/src/pages/no-signal/no-signal-page.dart';
 import 'package:rpgaming/src/pages/notification/notification-page.dart';
 import 'package:rpgaming/src/pages/profile/profile-page.dart';
-import 'Cache.dart';
-import 'styles/CustomTheme.dart';
 
-import 'pages/create-account/continue_create_account_page.dart';
-import 'pages/create-account/create_account_page.dart';
+import 'Cache.dart';
+import 'pages/create-account/continue-create-account-page.dart';
+import 'pages/create-account/create-account-page.dart';
 import 'pages/forgot-password/change-password-page.dart';
 import 'pages/forgot-password/forgot-password-page.dart';
 import 'pages/home/home_page.dart';
-import 'pages/load/load_page.dart';
-import 'pages/login/login_page.dart';
+import 'pages/load/load-page.dart';
+import 'pages/login/login-page.dart';
 import 'pages/report-error/report_error_page.dart';
+import 'styles/CustomTheme.dart';
 
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -58,7 +61,7 @@ class _AppWidgetState extends State<AppWidget> {
     Timer.run(() => onLoaded());
   }
   
-  onLoaded() async {
+  onLoaded() async {    
     var color = await Cache().getPrimaryColor();
 
     if(color != null){
@@ -66,6 +69,10 @@ class _AppWidgetState extends State<AppWidget> {
         _primary = color;
       });
     }
+    
+    // if(!await hasInternetConnection()){
+    //   to(context, NoSignalPage());
+    // }
   }
 
   @override
@@ -101,8 +108,13 @@ class _AppWidgetState extends State<AppWidget> {
         '/change-password': (BuildContext context) => const ChangePasswordPage(),
         '/report-error': (BuildContext context) => const ReportErrorPage(error: 'null',),
         '/home': (BuildContext context) => const HomePage(),
+        '/no-signal-page': (BuildContext context) => const NoSignalPage(),
+
         '/notifications': (BuildContext context) => const NotificationPage(),
         '/profile': (BuildContext context) => const ProfilePage(),
+
+        '/configs': (BuildContext context) => const ConfigsPage(),
+        '/theme-config': (BuildContext context) => const ThemeConfigPage(),
       },
       initialRoute: '/',
     );

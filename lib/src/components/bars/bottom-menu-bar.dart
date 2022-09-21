@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../Util/navigate.dart';
-import '../../pages/config/config-page.dart';
+import '../../pages/config/configs-page.dart';
 import '../../pages/home/home_page.dart';
 import '../../pages/notification/notification-page.dart';
 import '../../pages/profile/profile-page.dart';
@@ -98,7 +98,7 @@ class BottomMenuBar extends StatelessWidget {
 
                     //buttom gear
                     GestureDetector(
-                      onTap: !gearIsActive ? () => to(context, ConfigPage()) : null,
+                      onTap: !gearIsActive ? () => to(context, ConfigsPage()) : null,
                       child: Container(
                         decoration: BoxDecoration(
                           color: gearIsActive ? Theme.of(context).primaryColor.withOpacity(0.2) : null,

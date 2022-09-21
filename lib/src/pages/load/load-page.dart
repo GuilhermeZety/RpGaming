@@ -5,8 +5,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:rpgaming/src/api/auth_state.dart';
-import 'package:rpgaming/src/pages/load/animated_logo.dart';
-import 'package:rpgaming/src/pages/load/load_viewmodel.dart';
+import 'package:rpgaming/src/pages/load/animated-logo.dart';
+import 'package:rpgaming/src/pages/load/load-viewmodel.dart';
 import 'package:rpgaming/src/pages/load/wave.dart';
 
 class LoadPage extends StatefulWidget {

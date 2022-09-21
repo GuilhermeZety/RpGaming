@@ -2,8 +2,8 @@
   import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:rpgaming/src/Util/navigate.dart';
-import 'package:rpgaming/src/app_widget.dart';
+import 'navigate.dart';
+import '../app_widget.dart';
 
 import '../pages/report-error/report_error_page.dart';
 
