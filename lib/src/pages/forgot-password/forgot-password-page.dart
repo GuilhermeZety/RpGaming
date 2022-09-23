@@ -30,6 +30,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   void _sendEmail() async {    
     if (_formKey.currentState!.validate()) {
+      //api
       var response = await supabase.auth.api.resetPasswordForEmail(emailController.text);
       
       if(response.error == null){

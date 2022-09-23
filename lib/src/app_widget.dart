@@ -113,7 +113,7 @@ class _AppWidgetState extends State<AppWidget> {
         '/notifications': (BuildContext context) => const NotificationPage(),
         '/profile': (BuildContext context) => const ProfilePage(),
 
-        '/configs': (BuildContext context) => const ConfigsPage(),
+        '/config': (BuildContext context) => const ConfigsPage(),
         '/theme-config': (BuildContext context) => const ThemeConfigPage(),
       },
       initialRoute: '/',
